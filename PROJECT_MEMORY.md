@@ -35,9 +35,13 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
 ## Gerçek kimlik verileri (LinkedIn'den, 22 Tem 2026)
 - Bursa Teknik Üniversitesi, Yapay Zeka ve Makine Öğrenmesi, 1. yıl bitti
 - GDG Build with AI hackathonu 2.lik (LLM prompt optimizasyonu, Green AI)
-- TUA Astro Hackathon Türkiye 4.lüğü (Ay rotası, NASA DEM + A*, ekip: Thresholdai.tech)
-- Microsoft AI Innovators Yaz Programı kabulü; Data League sertifikası
-- Thresholdai.tech girişimi: YC 2026 Yaz başvurusu (kurucu ortak)
+- TUA Astro Hackathon: BURSA ÜNİVERSİTELERİ ARASI 1.LİK (Türkiye 4.lüğü), 29.03.2026
+- Veri Bilimi Olimpiyatı 2.lik (27.03.2026)
+- Microsoft AI Innovators kabulü; sertifikalar: Miuul Python for DS, MathWorks
+  Statistics Onramp, BTK Git/GitHub, Data League
+- CV Booster: LLM destekli mobil uygulama (FastAPI, rate limiting) — ana deneyim
+- DİKKAT: Thresholdai.tech'ten AYRILDI; sitede/anlatımda kullanma, "kendi
+  girişim denemelerim" de. CV: app/public/cv.pdf (kaynak ~/Documents/AliAndacErdasCVE.pdf)
 - Telefon: +90 505 469 61 51 · LinkedIn: linkedin.com/in/aliandacerdass
 
 ## Kaldığımız yer (son güncelleme: 22 Tem 2026, akşam)
