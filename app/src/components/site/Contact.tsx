@@ -14,6 +14,19 @@ export function Contact() {
         <p className="mt-8 max-w-[50ch] text-base leading-relaxed text-[var(--ink)]/70">
           Yeni bir proje, staj, iş birliği veya sadece merak: defterin kapısı açık.
         </p>
+        <div className="site-mono mt-10 flex flex-col items-center gap-3 text-sm md:flex-row md:gap-8">
+          <a href="tel:+905054696151" className="hover:text-[var(--ink-blue)]">
+            +90 505 469 61 51
+          </a>
+          <a
+            href="https://www.linkedin.com/in/aliandacerdass/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[var(--ink-blue)]"
+          >
+            LinkedIn ↗
+          </a>
+        </div>
       </div>
 
       <footer className="border-t border-[var(--hairline)]">
@@ -34,6 +47,17 @@ export function Contact() {
               className="hover:text-[var(--ink-blue)]"
             >
               GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/aliandacerdass/"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[var(--ink-blue)]"
+            >
+              LinkedIn
+            </a>
+            <a href="tel:+905054696151" className="hover:text-[var(--ink-blue)]">
+              Telefon
             </a>
           </div>
         </div>

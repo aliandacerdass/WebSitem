@@ -23,6 +23,22 @@ const projects = [
     img: "/assets/project-anime.jpg",
     alt: "Anime karakter tasarım sayfaları ve renk paletleri",
   },
+  {
+    id: "kayit-04",
+    title: "Ay Rotası Optimizasyonu",
+    desc: "Ay yüzeyi görevleri için otonom rota motoru: NASA yükseklik verisi (GeoTIFF DEM) üzerinde topografya duyarlı A*, eğim ve termal risk maliyetli üç görev profili. TUA Astro Hackathon projesi.",
+    stack: "Python · A* · NASA DEM",
+    img: null,
+    alt: "",
+  },
+  {
+    id: "kayit-05",
+    title: "SmartGrid-Core",
+    desc: "Akıllı şebekede dinamik enerji dağıtımı: Hash Map telemetri katmanı, kritiklik öncelikli Min-Heap kuyruğu, mesafe bazlı güç kaybı modeli, CLI ve SVG animasyonlu SCADA paneli.",
+    stack: "Python · Veri Yapıları · SCADA",
+    img: null,
+    alt: "",
+  },
 ];
 
 export function Projects() {
@@ -52,12 +68,20 @@ export function Projects() {
                 </p>
                 <span className="site-mono mt-4 text-xs text-[var(--ink)]/55">{p.stack}</span>
               </div>
-              <img
-                src={p.img}
-                alt={p.alt}
-                loading={i === 0 ? "eager" : "lazy"}
-                className="plate-reveal aspect-[3/2] w-full rounded-[4px] object-cover"
-              />
+              {p.img ? (
+                <img
+                  src={p.img}
+                  alt={p.alt}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className="plate-reveal aspect-[3/2] w-full rounded-[4px] object-cover"
+                />
+              ) : (
+                <div className="plate-reveal dot-grid flex aspect-[3/2] w-full items-center justify-center rounded-[4px] border border-[var(--ink)]/15 bg-[var(--paper)]">
+                  <span className="site-mono text-5xl font-medium text-[var(--ink-blue)]">
+                    {p.id.slice(-2)}
+                  </span>
+                </div>
+              )}
             </article>
           ))}
         </div>

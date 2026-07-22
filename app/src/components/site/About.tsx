@@ -21,10 +21,11 @@ export function About() {
             Sıfırdan öğrenen, üreterek ilerleyen.
           </h2>
           <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-[var(--ink)]/80">
-            Yapay zeka ve makine öğrenmesi öğrencisiyim. Temelden başlayıp her
-            konuyu kendi ellerimle kurarak öğreniyorum: modeller, mobil
-            uygulamalar, yapay zeka ajanları. Amacım öğrendiklerimi gerçek
-            ürünlere ve kendi girişimlerime dönüştürmek.
+            Bursa Teknik Üniversitesi Yapay Zeka ve Makine Öğrenmesi
+            öğrencisiyim. Temelden başlayıp her konuyu kendi ellerimle kurarak
+            öğreniyorum: modeller, mobil uygulamalar, yapay zeka ajanları.
+            Hackathonlarda yarışıyor, öğrendiklerimi gerçek ürünlere ve kendi
+            girişimlerime dönüştürüyorum.
           </p>
           <p className="mt-4 max-w-[58ch] text-base leading-relaxed text-[var(--ink)]/80">
             Bu site bir laboratuvar defteri gibi: her proje bir deney kaydı,

@@ -1,33 +1,33 @@
 const waypoints = [
   {
     tag: "Bölüm 01",
-    title: "İlk satırlar",
-    desc: "Python ile programlamaya giriş: temeli sağlam atmak için her kavram sıfırdan.",
+    title: "BTÜ, Yapay Zeka ve Makine Öğrenmesi",
+    desc: "Bursa Teknik Üniversitesi'nde bölüme başlangıç: Python, C ve Java temelleri, her kavram sıfırdan.",
   },
   {
     tag: "Bölüm 02",
-    title: "Makine öğrenmesi temelleri",
-    desc: "Gradyan iniş, regresyon, sinir ağları: formülleri deftere kendi elimle yazarak.",
+    title: "Data League",
+    desc: "Üniversiteler arası veri ligi: 4 haftalık bootcamp ve Kaggle eleme datathonu, sertifikayla tamamlandı.",
   },
   {
     tag: "Bölüm 03",
-    title: "Mobil: Fal Uygulaması",
-    desc: "Flutter ile ilk gerçek ürün: kahve falı yorumlayan uygulama.",
+    title: "TUA Astro Hackathon, 4.lük",
+    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Türkiye 4.lüğü.",
   },
   {
     tag: "Bölüm 04",
-    title: "Ajan takımları",
-    desc: "Yedi rollü AI konseyi: LLM ajanlarını bir şirket gibi çalıştırma deneyi.",
+    title: "Build with AI, 2.lik",
+    desc: "GDG Bursa'nın çadırlı hackathonunda LLM prompt optimizasyonu projesiyle 2.lik ödülü.",
   },
   {
     tag: "Bölüm 05",
-    title: "Andaç Anime",
-    desc: "Character Bible ve LoRA eğitimiyle tutarlı, özgün bir karakter kimliği.",
+    title: "Microsoft AI Innovators",
+    desc: "Microsoft mentorluğunda yaz programı: çoklu ajan sistemleri, Agent Framework ve Azure AI Foundry.",
   },
   {
     tag: "Sırada",
-    title: "aliandacerdass.dev ve ötesi",
-    desc: "Bu site ve defterin yeni sayfaları: daha büyük modeller, daha cesur ürünler.",
+    title: "Thresholdai.tech ve ötesi",
+    desc: "Üretim tesisleri için çoklu ajan sistemi girişimi: Y Combinator 2026 Yaz başvurusu yapıldı.",
   },
 ];
 
