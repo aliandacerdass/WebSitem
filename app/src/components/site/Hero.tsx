@@ -25,7 +25,7 @@ export function Hero() {
       const rect = wrap.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      overlay.style.transform = `scale(${1 + p * 25})`;
+      overlay.style.transform = `scale(${1 + p * 44})`;
       img.style.transform = `scale(${1.1 - p * 0.1})`;
       const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
       title.style.transform = `translateY(${-140 * tp}px)`;
@@ -59,7 +59,7 @@ export function Hero() {
         <svg
           ref={overlayRef}
           className="absolute inset-0 h-full w-full will-change-transform motion-reduce:hidden"
-          style={{ transformOrigin: "50% 47%" }}
+          style={{ transformOrigin: "57% 52.5%" }}
           viewBox="0 0 1000 560"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
