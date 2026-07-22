@@ -20,6 +20,18 @@ export function Hero() {
     if (!wrap || !overlay || !img || !title) return;
 
     let raf = 0;
+    // Zoom merkezi: "D" harfinin ic boslugu, viewBox koordinatinda (568, 293).
+    // preserveAspectRatio slice kirpmasi viewport'a gore degistigi icin merkez
+    // her boyutta piksel olarak yeniden hesaplanir; boylece dalis her ekranda
+    // harfin icinden gecer.
+    const setOrigin = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const s = Math.max(w / 1000, h / 560);
+      const ox = 568 * s - (1000 * s - w) / 2;
+      const oy = 293 * s - (560 * s - h) / 2;
+      overlay.style.transformOrigin = `${ox}px ${oy}px`;
+    };
     const update = () => {
       raf = 0;
       const rect = wrap.getBoundingClientRect();
@@ -34,13 +46,18 @@ export function Hero() {
       if (!raf) raf = requestAnimationFrame(update);
     };
 
+    setOrigin();
     update();
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    const onResize = () => {
+      setOrigin();
+      schedule();
+    };
+    window.addEventListener("resize", onResize);
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -59,8 +76,7 @@ export function Hero() {
         <svg
           ref={overlayRef}
           className="absolute inset-0 h-full w-full will-change-transform motion-reduce:hidden"
-          style={{ transformOrigin: "57% 52.5%" }}
-          viewBox="0 0 1000 560"
+                    viewBox="0 0 1000 560"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
         >
