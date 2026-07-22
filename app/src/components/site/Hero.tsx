@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 export function Hero() {
   const wrapRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<SVGSVGElement>(null);
+  const holeRef = useRef<SVGGElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -15,29 +16,26 @@ export function Hero() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const wrap = wrapRef.current;
     const overlay = overlayRef.current;
+    const hole = holeRef.current;
     const img = imgRef.current;
     const title = titleRef.current;
-    if (!wrap || !overlay || !img || !title) return;
+    if (!wrap || !overlay || !hole || !img || !title) return;
 
     let raf = 0;
-    // Zoom merkezi: "D" harfinin ic boslugu, viewBox koordinatinda (568, 293).
-    // preserveAspectRatio slice kirpmasi viewport'a gore degistigi icin merkez
-    // her boyutta piksel olarak yeniden hesaplanir; boylece dalis her ekranda
-    // harfin icinden gecer.
-    const setOrigin = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const s = Math.max(w / 1000, h / 560);
-      const ox = 568 * s - (1000 * s - w) / 2;
-      const oy = 293 * s - (560 * s - h) / 2;
-      overlay.style.transformOrigin = `${ox}px ${oy}px`;
-    };
+    // Buyutme SVG'nin ICINDE, vektorel yapilir (CSS transform degil): maske
+    // deligi her karede yeniden cizilir, Chrome'un dev katman rasterizasyon
+    // onbellegi devreye girmez (43x CSS scale'de geri donuste bozuk kareler
+    // birakiyordu). Merkez: D harfinin ici, viewBox (568, 293).
     const update = () => {
       raf = 0;
       const rect = wrap.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      overlay.style.transform = `scale(${1 + p * 44})`;
+      const sc = 1 + p * 44;
+      hole.setAttribute(
+        "transform",
+        `translate(568 293) scale(${sc}) translate(-568 -293)`,
+      );
       img.style.transform = `scale(${1.1 - p * 0.1})`;
       const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
       title.style.transform = `translateY(${-140 * tp}px)`;
@@ -46,18 +44,13 @@ export function Hero() {
       if (!raf) raf = requestAnimationFrame(update);
     };
 
-    setOrigin();
     update();
     window.addEventListener("scroll", schedule, { passive: true });
-    const onResize = () => {
-      setOrigin();
-      schedule();
-    };
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", schedule);
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
 
@@ -75,7 +68,7 @@ export function Hero() {
         {/* Kagit rengi ortu, ANDAÇ seklinde deligi var; scroll ile buyur */}
         <svg
           ref={overlayRef}
-          className="absolute inset-0 h-full w-full will-change-transform motion-reduce:hidden"
+          className="absolute inset-0 h-full w-full motion-reduce:hidden"
                     viewBox="0 0 1000 560"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
@@ -83,6 +76,7 @@ export function Hero() {
           <defs>
             <mask id="hero-mask">
               <rect width="1000" height="560" fill="white" />
+              <g ref={holeRef}>
               <text
                 x="500"
                 y="300"
@@ -98,6 +92,7 @@ export function Hero() {
               >
                 ANDAÇ
               </text>
+              </g>
             </mask>
           </defs>
           <rect width="1000" height="560" fill="var(--paper)" mask="url(#hero-mask)" />
