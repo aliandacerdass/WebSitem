@@ -11,7 +11,11 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
 - Higgsfield website id: `8431daac-93f8-4d2a-a4c6-0f81ed8c893d`
 - Canlı URL: https://aliandac-dev.higgsfield.app (deploy: `higgsfield website deploy <id>`)
 - Hedef domain: aliandacerdass.dev (Namecheap, GitHub Student Pack ile alındı; DNS yönlendirme henüz YAPILMADI)
-- Git: `origin` = Higgsfield repo (deploy kaynağı), `github` = https://github.com/aliandacerdass/WebSitem.git (yedek/vitrin)
+- Git: `origin` = Higgsfield repo (deploy kaynağı), `github` = https://github.com/aliandacerdass/WebSitem.git
+- HOSTING KARARI (22 Tem): ana yayın GitHub Pages (statik, gh-pages dalı,
+  GH_PAGES=1 prerender build, Actions otomatik). aliandacerdass.dev buraya
+  bağlanacak. Higgsfield deploy'u da duruyor (SSR, aliandac-dev.higgsfield.app).
+  İhtiyaç olursa Cloudflare'e geçilebilir.
 - Her commit Türkçe, her adımda iki remote'a da push.
 
 ## Tasarım anayasası (app/design-brief.md — detay orada)

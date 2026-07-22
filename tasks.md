@@ -7,6 +7,9 @@
 - [x] Proje ~/Projects/WebSitem'e taşındı, hafıza yapısı kuruldu
 - [x] GitHub remote bağlandı, ilk push
 
+## Yapıldı (devam 2)
+- [x] GitHub Pages'e statik yayın: prerender build + gh-pages dalı + CNAME + Actions workflow
+
 ## Yapıldı (devam)
 - [x] Site kodu: tema, 6 bölüm, hero C3 mask, Lenis+GSAP, inline SVG ikonlar
 - [x] Mekanik kapı: typecheck + build + grep kontrolleri (qa:fill iskelette yok)
@@ -21,7 +24,9 @@
 - [ ] Sertifika görselleri/PDF'leri varsa /basarilar sayfasına eklenebilir
 
 ## Gelecek / bekleyen
-- [ ] aliandacerdass.dev DNS yönlendirmesi (Namecheap'te higgsfield.app'e yönlendirme veya CNAME; Higgsfield custom domain destekliyor mu araştır)
+- [ ] KULLANICI: Namecheap DNS kayıtlarını girecek (4 A kaydı + www CNAME, aşağıda)
+- [ ] KULLANICI: GitHub repo Settings > Pages > custom domain doğrula + Enforce HTTPS işaretle
+- [ ] DNS yayıldıktan sonra https://aliandacerdass.dev test et
 - [ ] CV PDF'i hazırla ve siteye koy (CV İndir butonu şimdilik iletişime yönlenebilir)
 - [ ] Gerçek içerik doğrulama: eğitim bilgileri, proje tarihleri kullanıcıdan teyit
 - [ ] Cover video (kredi gerektirir, kullanıcı izniyle)
