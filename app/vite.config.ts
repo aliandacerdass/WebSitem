@@ -73,6 +73,15 @@ export default defineConfig(({ mode }) => {
       // inside effects/handlers, or guarded with `typeof window !== "undefined"`.
       tanstackStart({
         server: { entry: "server" },
+        // GH_PAGES=1: GitHub Pages için statik çıktı. Sayfalar build sırasında
+        // bir kez render edilip dist/client'a HTML olarak yazılır (prerender).
+        // Higgsfield deploy'u bu env'i set etmez, SSR davranışı değişmez.
+        ...(process.env.GH_PAGES === "1"
+          ? {
+              prerender: { enabled: true, crawlLinks: true },
+              pages: [{ path: "/" }, { path: "/basarilar" }],
+            }
+          : {}),
       }),
       higgsfieldDesignInspectorVitePlugin(designInspectorEnabled),
       react({

@@ -1,0 +1,39 @@
+name: GitHub Pages yayını
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Bağımlılıkları kur
+        working-directory: app
+        run: bun install --frozen-lockfile
+
+      - name: Statik build (prerender)
+        working-directory: app
+        run: GH_PAGES=1 bunx vite build
+
+      - name: SPA fallback ve CNAME
+        working-directory: app
+        run: |
+          cp dist/client/index.html dist/client/404.html
+          echo "aliandacerdass.dev" > dist/client/CNAME
+
+      - name: gh-pages dalına yayınla
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: app/dist/client
+          publish_branch: gh-pages
+          force_orphan: true
