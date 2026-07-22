@@ -32,6 +32,11 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
 - SSR hard rule: top-level `window` erişimi çökertir; sadece useEffect/guard içinde.
 - Scratchpad'den ~/Projects/WebSitem'e taşındı (22 Tem 2026).
 
-## Kaldığımız yer (son güncelleme: 22 Tem 2026)
-- Site iskeleti oluşturuldu, görseller yerleşti, hafıza + görev yapısı kuruldu.
-- Sırada: sitenin kodlanması (bkz. tasks.md)
+## Kaldığımız yer (son güncelleme: 22 Tem 2026, akşam)
+- Site KODLANDI ve CANLIDA: https://aliandac-dev.higgsfield.app
+- 6 bölüm: maskeli ANDAÇ hero (C3), hakkımda, deney kayıtları (3 proje),
+  alet çantası (bento + inline SVG ikonlar), yolculuk (yatay ray), iletişim.
+- Typecheck + build + mekanik grep kapısı temiz. qa:fill scripti iskelette yok,
+  kontroller elle grep ile yapıldı.
+- app-meta.json dolduruldu (og_title, favicon.svg, hero.jpg og görseli).
+- Sırada: kullanıcı gözden geçirmesi + DNS bağlama (bkz. tasks.md)
