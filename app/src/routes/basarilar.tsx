@@ -19,6 +19,13 @@ export const Route = createFileRoute("/basarilar")({
 
 const results = [
   {
+    tag: "1.lik",
+    title: "TUA Astro Hackathon",
+    org: "Sanayi ve Teknoloji Bakanlığı · Türkiye Uzay Ajansı · TÜMMİAD · Valentura",
+    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Bursa üniversiteleri arasında 1.lik, Türkiye genelinde 4.lük. Ay yüzeyi görevleri için otonom rota optimizasyonu: NASA yükseklik verisi üzerinde topografya duyarlı A* motoru, eğim ve termal risk maliyet modeli, üç uyarlanabilir görev profili.",
+    stack: "Python · A* · NASA GeoTIFF DEM",
+  },
+  {
     tag: "2.lik Ödülü",
     title: "Build with AI Hackathonu",
     org: "GDG Bursa (Google Developers Group)",
@@ -26,11 +33,11 @@ const results = [
     stack: "LLM · Prompt Optimizasyonu · Sürdürülebilirlik",
   },
   {
-    tag: "Türkiye 4.lüğü",
-    title: "TUA Astro Hackathon",
-    org: "Sanayi ve Teknoloji Bakanlığı · Türkiye Uzay Ajansı · TÜMMİAD · Valentura",
-    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonu. Ay yüzeyi görevleri için otonom rota optimizasyonu: NASA yükseklik verisi üzerinde topografya duyarlı A* motoru, eğim ve termal risk maliyet modeli, üç uyarlanabilir görev profili.",
-    stack: "Python · A* · NASA GeoTIFF DEM",
+    tag: "2.lik",
+    title: "Veri Bilimi Olimpiyatı",
+    org: "Data Science Olympiad",
+    desc: "Veri bilimi yarışmasında ikincilik: veri analizi ve makine öğrenmesi problemlerinde takım çalışmasıyla elde edilen derece.",
+    stack: "Veri Bilimi · Makine Öğrenmesi",
   },
 ];
 
@@ -43,15 +50,36 @@ const programs = [
     stack: "Multi-Agent · Azure AI Foundry",
   },
   {
-    tag: "Başvuru",
-    title: "Y Combinator 2026 Yaz",
-    org: "Thresholdai.tech",
-    desc: "Kurucu ortağı olduğum girişim: seri üretim tesislerini özerk, atıksız ortamlara dönüştüren çoklu ajan sistemi. YC 2026 Yaz dönemine resmi başvuru yapıldı.",
-    stack: "Girişim · Çoklu Ajan Sistemleri",
+    tag: "Girişim",
+    title: "Kendi Girişim Denemelerim",
+    org: "Fikirden ürüne",
+    desc: "Fikri ürüne çevirme pratiği: LLM destekli CV Booster mobil uygulaması, kahve falı yorumlayan Fal Uygulaması ve yapay zeka ajan takımlarıyla ürün denemeleri. Her deneme, bir sonraki girişimin temeli.",
+    stack: "Ürün Geliştirme · FastAPI · LLM",
   },
 ];
 
 const certificates = [
+  {
+    tag: "Sertifika",
+    title: "Python Programming for Data Science",
+    org: "Miuul · 26.04.2026",
+    desc: "Veri bilimi için Python programlama eğitimi tamamlandı.",
+    stack: "Python · Veri Bilimi",
+  },
+  {
+    tag: "Sertifika",
+    title: "Statistics Onramp",
+    org: "MathWorks · 12.03.2026",
+    desc: "İstatistik temelleri eğitimi tamamlandı.",
+    stack: "İstatistik",
+  },
+  {
+    tag: "Sertifika",
+    title: "Version Control: Git and GitHub",
+    org: "BTK Akademi · 21.02.2026",
+    desc: "Sürüm kontrolü, Git ve GitHub iş akışları eğitimi tamamlandı.",
+    stack: "Git · GitHub",
+  },
   {
     tag: "Sertifika",
     title: "Data League",
@@ -95,14 +123,24 @@ function Achievements() {
           Deftere işlenen sonuçlar: yarışma dereceleri, kabul edilen programlar
           ve sertifikalar. Detaylar ve duyurular LinkedIn profilimde.
         </p>
-        <a
-          href="https://www.linkedin.com/in/aliandacerdass/"
-          target="_blank"
-          rel="noreferrer"
-          className="ink-fill mt-8 inline-block border border-[var(--ink-blue)] px-6 py-3 text-sm font-bold transition-colors"
-        >
-          LinkedIn ↗
-        </a>
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="ink-fill inline-block border border-[var(--ink-blue)] px-6 py-3 text-sm font-bold transition-colors"
+          >
+            CV İndir
+          </a>
+          <a
+            href="https://www.linkedin.com/in/aliandacerdass/"
+            target="_blank"
+            rel="noreferrer"
+            className="site-mono border border-[var(--ink)]/25 px-4 py-2 text-xs transition-transform hover:-translate-y-[1px] hover:border-[var(--ink-blue)] hover:text-[var(--ink-blue)] motion-reduce:transition-none"
+          >
+            LinkedIn ↗
+          </a>
+        </div>
       </header>
 
       <section className="mx-auto max-w-6xl px-5 pb-20 md:px-8">

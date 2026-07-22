@@ -31,14 +31,24 @@ export function About() {
             Bu site bir laboratuvar defteri gibi: her proje bir deney kaydı,
             her adım bir öğrenme.
           </p>
-          <a
-            href="https://github.com/aliandacerdass"
-            target="_blank"
-            rel="noreferrer"
-            className="site-mono mt-8 inline-block w-fit border border-[var(--ink)]/25 px-4 py-2 text-xs transition-transform hover:-translate-y-[1px] hover:border-[var(--ink-blue)] hover:text-[var(--ink-blue)] hover:shadow-sm motion-reduce:transition-none"
-          >
-            GitHub Profilim ↗
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href="/cv.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="site-mono inline-block w-fit border border-[var(--ink-blue)] px-4 py-2 text-xs text-[var(--ink-blue)] transition-transform hover:-translate-y-[1px] hover:shadow-sm motion-reduce:transition-none"
+            >
+              CV İndir
+            </a>
+            <a
+              href="https://github.com/aliandacerdass"
+              target="_blank"
+              rel="noreferrer"
+              className="site-mono inline-block w-fit border border-[var(--ink)]/25 px-4 py-2 text-xs transition-transform hover:-translate-y-[1px] hover:border-[var(--ink-blue)] hover:text-[var(--ink-blue)] hover:shadow-sm motion-reduce:transition-none"
+            >
+              GitHub Profilim ↗
+            </a>
+          </div>
         </div>
       </div>
     </section>

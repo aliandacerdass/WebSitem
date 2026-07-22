@@ -11,8 +11,8 @@ const waypoints = [
   },
   {
     tag: "Bölüm 03",
-    title: "TUA Astro Hackathon, 4.lük",
-    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Türkiye 4.lüğü.",
+    title: "TUA Astro Hackathon, 1.lik",
+    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Bursa üniversiteleri arasında 1.lik.",
   },
   {
     tag: "Bölüm 04",
@@ -26,8 +26,8 @@ const waypoints = [
   },
   {
     tag: "Sırada",
-    title: "Thresholdai.tech ve ötesi",
-    desc: "Üretim tesisleri için çoklu ajan sistemi girişimi: Y Combinator 2026 Yaz başvurusu yapıldı.",
+    title: "Kendi girişim denemelerim",
+    desc: "CV Booster, Fal Uygulaması ve ajan takımları: fikirden ürüne her deneme, bir sonraki girişimin temeli.",
   },
 ];
 

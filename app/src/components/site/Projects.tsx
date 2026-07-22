@@ -39,6 +39,14 @@ const projects = [
     img: null,
     alt: "",
   },
+  {
+    id: "kayit-06",
+    title: "CV Booster",
+    desc: "LLM destekli metin iyileştirme sistemli mobil uygulama: Python (FastAPI) REST API, IP ve cihaz bazlı hız sınırlama, ölçeklenebilir backend-frontend mimarisi, yayına hazır kurulum.",
+    stack: "FastAPI · LLM · REST API",
+    img: null,
+    alt: "",
+  },
 ];
 
 export function Projects() {
