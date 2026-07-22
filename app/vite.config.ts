@@ -78,7 +78,9 @@ export default defineConfig(({ mode }) => {
         // Higgsfield deploy'u bu env'i set etmez, SSR davranışı değişmez.
         ...(process.env.GH_PAGES === "1"
           ? {
-              prerender: { enabled: true, crawlLinks: true },
+              // crawlLinks kapali: /cv.pdf gibi ikili dosyalari takip edip
+              // metin olarak yeniden yazmasin (PDF'i bozuyordu).
+              prerender: { enabled: true, crawlLinks: false },
               pages: [{ path: "/" }, { path: "/basarilar" }],
             }
           : {}),
