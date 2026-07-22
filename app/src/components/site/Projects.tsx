@@ -1,4 +1,14 @@
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  desc: string;
+  stack: string;
+  img: string | null;
+  alt: string;
+  fit?: "contain";
+};
+
+const projects: Project[] = [
   {
     id: "kayit-01",
     title: "Fal Uygulaması",
@@ -44,8 +54,9 @@ const projects = [
     title: "CV Booster",
     desc: "LLM destekli metin iyileştirme sistemli mobil uygulama: Python (FastAPI) REST API, IP ve cihaz bazlı hız sınırlama, ölçeklenebilir backend-frontend mimarisi, yayına hazır kurulum.",
     stack: "FastAPI · LLM · REST API",
-    img: null,
-    alt: "",
+    img: "/assets/project-cvbooster.png",
+    alt: "CV Booster uygulama logosu",
+    fit: "contain",
   },
 ];
 
@@ -76,7 +87,16 @@ export function Projects() {
                 </p>
                 <span className="site-mono mt-4 text-xs text-[var(--ink)]/55">{p.stack}</span>
               </div>
-              {p.img ? (
+              {p.img && p.fit === "contain" ? (
+                <div className="plate-reveal dot-grid flex aspect-[3/2] w-full items-center justify-center rounded-[4px] border border-[var(--ink)]/15 bg-white">
+                  <img
+                    src={p.img}
+                    alt={p.alt}
+                    loading="lazy"
+                    className="h-3/5 w-auto object-contain"
+                  />
+                </div>
+              ) : p.img ? (
                 <img
                   src={p.img}
                   alt={p.alt}
