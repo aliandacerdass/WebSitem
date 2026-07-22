@@ -1,7 +1,8 @@
 {
-  "og_title": null,
-  "og_description": null,
-  "og_image_url": null,
-  "favicon_url": null,
+  "og_title": "Ali Andaç Erdaş",
+  "og_description": "Yapay zeka ve makine öğrenmesi öğrencisi. Deney kayıtları: projeler, yolculuk ve iletişim.",
+  "og_image_url": "/assets/hero.jpg",
+  "marketplace_cover_url": "/assets/hero.jpg",
+  "favicon_url": "/assets/favicon.svg",
   "og_video_url": null
 }

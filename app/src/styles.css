@@ -111,3 +111,115 @@
     border-color: var(--hf-color-border-default);
   }
 }
+
+/* ===== aliandacerdass.dev: laboratuvar defteri tema katmani ===== */
+:root {
+  --paper: #f6f6f3;
+  --paper-2: #ecece7;
+  --ink: #16181d;
+  --ink-blue: #2743c7;
+  --hairline: #d8d8d2;
+  --font-display: "Satoshi", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono-site: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html[data-site="portfolio"] {
+    background-color: var(--paper);
+    color: var(--ink);
+    color-scheme: light;
+  }
+  html[data-site="portfolio"] body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+  }
+}
+
+.site-mono {
+  font-family: var(--font-mono-site);
+  letter-spacing: 0.08em;
+}
+
+/* dot grid arka plan dokusu (yetenekler buyuk hucre) */
+.dot-grid {
+  background-image: radial-gradient(var(--hairline) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* iletisim CTA: alt cizgi murekkep gibi cekilir */
+.underline-draw {
+  position: relative;
+}
+.underline-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.06em;
+  height: 0.045em;
+  width: 100%;
+  background: var(--ink-blue);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.underline-draw:hover::after,
+.underline-draw:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .underline-draw::after {
+    transition: none;
+  }
+}
+
+/* hero CTA: soldan murekkep dolumu */
+.ink-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ink-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink-blue);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ink-fill:hover::before,
+.ink-fill:focus-visible::before {
+  transform: scaleX(1);
+}
+.ink-fill:hover,
+.ink-fill:focus-visible {
+  color: var(--paper);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-fill::before {
+    transition: none;
+  }
+}
+
+/* proje satiri: plaka clip ile acilir */
+.plate-reveal {
+  clip-path: inset(8% 4% 8% 4% round 4px);
+  transform: scale(0.97);
+  transition:
+    clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-row:hover .plate-reveal,
+.project-row:focus-within .plate-reveal {
+  clip-path: inset(0 0 0 0 round 4px);
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .plate-reveal {
+    transition: none;
+    clip-path: inset(0 0 0 0 round 4px);
+    transform: none;
+  }
+}
