@@ -22,19 +22,16 @@ export function Hero() {
     if (!wrap || !overlay || !hole || !img || !title) return;
 
     let raf = 0;
+    let target = 0;
+    let shown = 0;
     // Buyutme SVG'nin ICINDE, vektorel yapilir (CSS transform degil): maske
-    // deligi her karede yeniden cizilir, Chrome'un dev katman rasterizasyon
-    // onbellegi devreye girmez (43x CSS scale'de geri donuste bozuk kareler
-    // birakiyordu). Merkez: D harfinin ici, viewBox (568, 293).
-    const update = () => {
-      raf = 0;
-      const rect = wrap.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      // Maske %85'te tamamen acilir; kalan %15 bitmis gorseli sabit tutar,
-      // sonraki bolum ancak animasyon bittikten sonra gelir.
+    // deligi her karede yeniden cizilir, raster onbellek bozulmasi olmaz.
+    // Merkez: D harfinin ici, viewBox (568, 293).
+    const apply = (p: number) => {
+      // Maske %85'te tamamen acilir; kalan %15 bitmis gorseli sabit tutar.
       const pm = Math.min(1, p / 0.85);
-      const sc = 1 + pm * 44;
+      // Ustel olcek: zoom hizi bastan sona algisal olarak sabit.
+      const sc = Math.pow(45, pm);
       hole.setAttribute(
         "transform",
         `translate(568 293) scale(${sc}) translate(-568 -293)`,
@@ -43,11 +40,31 @@ export function Hero() {
       const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
       title.style.transform = `translateY(${-140 * tp}px)`;
     };
+    const readTarget = () => {
+      const rect = wrap.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      target = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+    };
+    // Yumusatma: gosterilen deger hedefe her karede kademeli yaklasir;
+    // scroll ne kadar sicrarsa sicrasin animasyon hizi sinirli kalir.
+    const tick = () => {
+      raf = 0;
+      shown += (target - shown) * 0.11;
+      if (Math.abs(target - shown) > 0.0004) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        shown = target;
+      }
+      apply(shown);
+    };
     const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+      readTarget();
+      if (!raf) raf = requestAnimationFrame(tick);
     };
 
-    update();
+    readTarget();
+    shown = target;
+    apply(shown);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => {
