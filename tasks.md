@@ -15,7 +15,10 @@
 
 ## Sırada
 - [ ] Kullanıcı siteyi gezsin, geri bildirim versin (hero maske hissi, kopya metinler)
-- [ ] Yolculuk bölümü içeriği: gerçek eğitim bilgileri/okul/yıllar kullanıcıdan alınıp yazılacak (şu an genel "Bölüm" etiketleri)
+- [x] Yolculuk gerçek verilerle yazıldı (LinkedIn'den çekildi)
+- [x] /basarilar sayfası + telefon + LinkedIn linkleri eklendi, deploy edildi
+- [ ] Ay Rotası ve SmartGrid-Core proje kartlarına görsel üretilebilir (şimdilik numaralı plaka)
+- [ ] Sertifika görselleri/PDF'leri varsa /basarilar sayfasına eklenebilir
 
 ## Gelecek / bekleyen
 - [ ] aliandacerdass.dev DNS yönlendirmesi (Namecheap'te higgsfield.app'e yönlendirme veya CNAME; Higgsfield custom domain destekliyor mu araştır)

@@ -32,8 +32,18 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
 - SSR hard rule: top-level `window` erişimi çökertir; sadece useEffect/guard içinde.
 - Scratchpad'den ~/Projects/WebSitem'e taşındı (22 Tem 2026).
 
+## Gerçek kimlik verileri (LinkedIn'den, 22 Tem 2026)
+- Bursa Teknik Üniversitesi, Yapay Zeka ve Makine Öğrenmesi, 1. yıl bitti
+- GDG Build with AI hackathonu 2.lik (LLM prompt optimizasyonu, Green AI)
+- TUA Astro Hackathon Türkiye 4.lüğü (Ay rotası, NASA DEM + A*, ekip: Thresholdai.tech)
+- Microsoft AI Innovators Yaz Programı kabulü; Data League sertifikası
+- Thresholdai.tech girişimi: YC 2026 Yaz başvurusu (kurucu ortak)
+- Telefon: +90 505 469 61 51 · LinkedIn: linkedin.com/in/aliandacerdass
+
 ## Kaldığımız yer (son güncelleme: 22 Tem 2026, akşam)
 - Site KODLANDI ve CANLIDA: https://aliandac-dev.higgsfield.app
+- /basarilar sayfası eklendi (yarışmalar, programlar, sertifikalar); projelere
+  Ay Rotası + SmartGrid-Core eklendi; yolculuk gerçek verilerle güncellendi.
 - 6 bölüm: maskeli ANDAÇ hero (C3), hakkımda, deney kayıtları (3 proje),
   alet çantası (bento + inline SVG ikonlar), yolculuk (yatay ray), iletişim.
 - Typecheck + build + mekanik grep kapısı temiz. qa:fill scripti iskelette yok,
