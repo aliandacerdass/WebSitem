@@ -31,12 +31,15 @@ export function Hero() {
       const rect = wrap.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      const sc = 1 + p * 44;
+      // Maske %85'te tamamen acilir; kalan %15 bitmis gorseli sabit tutar,
+      // sonraki bolum ancak animasyon bittikten sonra gelir.
+      const pm = Math.min(1, p / 0.85);
+      const sc = 1 + pm * 44;
       hole.setAttribute(
         "transform",
         `translate(568 293) scale(${sc}) translate(-568 -293)`,
       );
-      img.style.transform = `scale(${1.1 - p * 0.1})`;
+      img.style.transform = `scale(${1.1 - pm * 0.1})`;
       const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
       title.style.transform = `translateY(${-140 * tp}px)`;
     };
