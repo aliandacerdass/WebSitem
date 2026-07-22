@@ -93,6 +93,7 @@ export function Projects() {
                     src={p.img}
                     alt={p.alt}
                     loading="lazy"
+                    decoding="async"
                     className="h-3/5 w-auto object-contain"
                   />
                 </div>
@@ -101,6 +102,7 @@ export function Projects() {
                   src={p.img}
                   alt={p.alt}
                   loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
                   className="plate-reveal aspect-[3/2] w-full rounded-[4px] object-cover"
                 />
               ) : (

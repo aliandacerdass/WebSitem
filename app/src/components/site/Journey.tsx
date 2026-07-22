@@ -41,6 +41,8 @@ export function Journey() {
         src="/assets/journey.jpg"
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover opacity-70"
       />
       <div className="relative mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">

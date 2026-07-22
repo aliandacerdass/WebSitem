@@ -6,6 +6,8 @@ export function About() {
           <img
             src="/assets/about.jpg"
             alt="Çalışma masasında ders çalışan Ali Andaç, arkadan"
+            loading="lazy"
+            decoding="async"
             className="aspect-[3/4] w-full rounded-[4px] object-cover"
           />
           <figcaption className="site-mono mt-3 text-[11px] text-[var(--ink)]/60">

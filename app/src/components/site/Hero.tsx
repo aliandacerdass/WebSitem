@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 
 // C3: maskeli hero. Dev "ANDAÇ" tipinin icinden gorsel gorunur; scroll
-// maskeyi buyutur, gorsel full-bleed olur. Sticky + scrub (pin-spacer yok).
+// maskeyi buyutur, gorsel full-bleed olur. Sticky + dogrudan scroll'dan
+// hesaplanan transform (kutuphane durumu yok: her scroll pozisyonu tek bir
+// gorunume denk gelir, asagi inip cikmak animasyonu bozamaz).
 // Ilk kare eksiksiz cizilir; reduced-motion'da maske katmani gizli, statik hal.
 export function Hero() {
   const wrapRef = useRef<HTMLElement>(null);
@@ -11,45 +13,34 @@ export function Hero() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const wrap = wrapRef.current;
+    const overlay = overlayRef.current;
+    const img = imgRef.current;
+    const title = titleRef.current;
+    if (!wrap || !overlay || !img || !title) return;
 
-    let cleanup: (() => void) | undefined;
-    let cancelled = false;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = wrap.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      overlay.style.transform = `scale(${1 + p * 25})`;
+      img.style.transform = `scale(${1.1 - p * 0.1})`;
+      const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
+      title.style.transform = `translateY(${-140 * tp}px)`;
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
 
-    void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
-      ([{ gsap }, { ScrollTrigger }]) => {
-        if (cancelled || !wrapRef.current) return;
-        gsap.registerPlugin(ScrollTrigger);
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.7,
-          },
-        });
-        tl.to(overlayRef.current, { scale: 26, ease: "none", transformOrigin: "50% 47%" }, 0)
-          .to(imgRef.current, { scale: 1, ease: "none" }, 0)
-          .to(titleRef.current, { y: -140, ease: "none" }, 0.15);
-
-        // Baslik satiri mount'ta kurulur (viewport'a bagli degil)
-        gsap.from(titleRef.current!.children, {
-          y: 44,
-          duration: 0.9,
-          stagger: 0.09,
-          ease: "power3.out",
-        });
-
-        cleanup = () => {
-          tl.scrollTrigger?.kill();
-          tl.kill();
-        };
-      },
-    );
-
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     return () => {
-      cancelled = true;
-      cleanup?.();
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
 
@@ -60,6 +51,7 @@ export function Hero() {
           ref={imgRef}
           src="/assets/hero.jpg"
           alt="Gece çalışma masası: makine öğrenmesi notları, kod ve kahve"
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full scale-110 object-cover"
         />
 
@@ -67,6 +59,7 @@ export function Hero() {
         <svg
           ref={overlayRef}
           className="absolute inset-0 h-full w-full will-change-transform motion-reduce:hidden"
+          style={{ transformOrigin: "50% 47%" }}
           viewBox="0 0 1000 560"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
@@ -96,7 +89,7 @@ export function Hero() {
 
         <div
           ref={titleRef}
-          className="absolute inset-x-0 bottom-14 z-10 mx-auto flex max-w-6xl flex-col items-start gap-5 px-5 md:px-8"
+          className="hero-rise absolute inset-x-0 bottom-14 z-10 mx-auto flex max-w-6xl flex-col items-start gap-5 px-5 md:px-8"
         >
           <p className="site-mono text-xs text-[var(--ink)] motion-reduce:text-[var(--paper)] md:text-sm">
             Ali Andaç Erdaş · Yapay Zeka ve Makine Öğrenmesi

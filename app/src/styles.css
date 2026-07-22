@@ -223,3 +223,24 @@
     transform: none;
   }
 }
+
+/* hero baslik satirlari mount'ta yukselir (viewport'a bagli degil) */
+@keyframes hero-rise {
+  from {
+    transform: translateY(44px);
+  }
+  to {
+    transform: none;
+  }
+}
+.hero-rise > * {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-rise > *:nth-child(2) {
+  animation-delay: 0.09s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise > * {
+    animation: none;
+  }
+}
