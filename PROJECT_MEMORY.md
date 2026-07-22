@@ -10,7 +10,7 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
 - Stack: React 19 + TanStack Start (SSR), Vite 7, bun, Tailwind v4, Cloudflare Worker
 - Higgsfield website id: `8431daac-93f8-4d2a-a4c6-0f81ed8c893d`
 - Canlı URL: https://aliandac-dev.higgsfield.app (deploy: `higgsfield website deploy <id>`)
-- Hedef domain: aliandacerdass.dev (Namecheap, GitHub Student Pack ile alındı; DNS yönlendirme henüz YAPILMADI)
+- Hedef domain: aliandacerdass.dev (Name.com, GitHub Student Pack ile alındı)
 - Git: `origin` = Higgsfield repo (deploy kaynağı), `github` = https://github.com/aliandacerdass/WebSitem.git
 - HOSTING KARARI (22 Tem): ana yayın GitHub Pages (statik, gh-pages dalı,
   GH_PAGES=1 prerender build, Actions otomatik). aliandacerdass.dev buraya

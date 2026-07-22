@@ -24,7 +24,7 @@
 - [ ] Sertifika görselleri/PDF'leri varsa /basarilar sayfasına eklenebilir
 
 ## Gelecek / bekleyen
-- [ ] KULLANICI: Namecheap DNS kayıtlarını girecek (4 A kaydı + www CNAME, aşağıda)
+- [ ] KULLANICI: Name.com DNS kayıtlarını girecek (4 A kaydı + www CNAME, aşağıda)
 - [ ] KULLANICI: GitHub repo Settings > Pages > custom domain doğrula + Enforce HTTPS işaretle
 - [ ] DNS yayıldıktan sonra https://aliandacerdass.dev test et
 - [ ] CV PDF'i hazırla ve siteye koy (CV İndir butonu şimdilik iletişime yönlenebilir)
