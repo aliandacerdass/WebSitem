@@ -11,6 +11,9 @@ export function Hero() {
   const holeRef = useRef<SVGGElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const maskRectRef = useRef<SVGRectElement>(null);
+  const paperRectRef = useRef<SVGRectElement>(null);
+  const textRef = useRef<SVGTextElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -24,21 +27,38 @@ export function Hero() {
     let raf = 0;
     let target = 0;
     let shown = 0;
+    // viewBox yuksekligi ekran oranina gore hesaplanir; sabit 560 olsaydi
+    // "slice" dar/dik ekranda yanlari kirpar, ANDAÇ'in ucu ekran disinda
+    // kalirdi. Genislik hep 1000: yazi her ekranda ayni oranda sigar.
+    let vh = 560;
     // Buyutme SVG'nin ICINDE, vektorel yapilir (CSS transform degil): maske
     // deligi her karede yeniden cizilir, raster onbellek bozulmasi olmaz.
-    // Merkez: D harfinin ici, viewBox (568, 293).
+    // Merkez: D harfinin ici, x=568; y yazi merkezinin 7 birim ustu.
     const apply = (p: number) => {
       // Maske %85'te tamamen acilir; kalan %15 bitmis gorseli sabit tutar.
       const pm = Math.min(1, p / 0.85);
       // Ustel olcek: zoom hizi bastan sona algisal olarak sabit.
       const sc = Math.pow(45, pm);
+      const cy = vh / 2 - 7;
       hole.setAttribute(
         "transform",
-        `translate(568 293) scale(${sc}) translate(-568 -293)`,
+        `translate(568 ${cy}) scale(${sc}) translate(-568 -${cy})`,
       );
       img.style.transform = `scale(${1.1 - pm * 0.1})`;
       const tp = Math.min(1, Math.max(0, (p - 0.15) / 0.85));
       title.style.transform = `translateY(${-140 * tp}px)`;
+    };
+    const measure = () => {
+      const sticky = overlay.parentElement;
+      if (!sticky) return;
+      const { clientWidth: w, clientHeight: h } = sticky;
+      if (!w || !h) return;
+      vh = Math.round((1000 * h) / w);
+      overlay.setAttribute("viewBox", `0 0 1000 ${vh}`);
+      for (const r of [maskRectRef.current, paperRectRef.current]) {
+        r?.setAttribute("height", String(vh));
+      }
+      textRef.current?.setAttribute("y", String(vh / 2));
     };
     const readTarget = () => {
       const rect = wrap.getBoundingClientRect();
@@ -62,15 +82,20 @@ export function Hero() {
       if (!raf) raf = requestAnimationFrame(tick);
     };
 
+    const onResize = () => {
+      measure();
+      schedule();
+    };
+    measure();
     readTarget();
     shown = target;
     apply(shown);
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    window.addEventListener("resize", onResize);
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -95,9 +120,10 @@ export function Hero() {
         >
           <defs>
             <mask id="hero-mask">
-              <rect width="1000" height="560" fill="white" />
+              <rect ref={maskRectRef} width="1000" height="560" fill="white" />
               <g ref={holeRef}>
               <text
+                ref={textRef}
                 x="500"
                 y="300"
                 textAnchor="middle"
@@ -115,7 +141,7 @@ export function Hero() {
               </g>
             </mask>
           </defs>
-          <rect width="1000" height="560" fill="var(--paper)" mask="url(#hero-mask)" />
+          <rect ref={paperRectRef} width="1000" height="560" fill="var(--paper)" mask="url(#hero-mask)" />
         </svg>
 
         <div
