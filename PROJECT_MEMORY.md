@@ -48,7 +48,24 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
   girişim denemelerim" de. CV: app/public/cv.pdf (kaynak ~/Documents/AliAndacErdasCVE.pdf)
 - Telefon: +90 505 469 61 51 · LinkedIn: linkedin.com/in/aliandacerdass
 
-## Kaldığımız yer (son güncelleme: 22 Tem 2026, akşam)
+## Kaldığımız yer (son güncelleme: 10 Eyl 2026)
+- LinkedIn geri bildirimi uygulandı ve CANLIDA: yolculuk bölümündeki patika
+  iğneleri tıklanabilir. Tıklayınca ENGEL + KAZANIM notu açılıyor.
+  Commitler: 04a2325 (etkileşim), 5a04cf8 (engel notları).
+- journey.jpg'deki 6 iğnenin konumu yüzde koordinat olarak Journey.tsx'te.
+  Kendi iğnemizi ÇİZMİYORUZ: çizili iğneyi ikizlememek için sadece halka +
+  şeffaf 44px dokunma hedefi var. Görsel değişirse koordinatlar yeniden
+  ölçülmeli.
+- Panel iğneye yapışmıyor: haritanın içinde, iğnenin ters yanında, dikey
+  ortalı, yüksekliği haritayla sınırlı. Not uzarsa kendi içinde kayar.
+- Engel metinleri kullanıcı onayından geçti (Bölüm 01 kullanıcının kendi
+  cümlesi, kalan 5'i teknik taslak olarak onaylandı).
+- DİKKAT: `origin` remote'u (Higgsfield) 404 veriyor, push başarısız oluyor.
+  Yayın GitHub Pages üzerinden (github remote + pages.yml Actions).
+  .git/config'de eski Higgsfield token'ı düz metin duruyor, temizlenmeli.
+- Sırada: DNS/başarılar sayfası kontrolü (bkz. tasks.md).
+
+### Önceki durum (22 Tem 2026)
 - Site KODLANDI ve CANLIDA: https://aliandac-dev.higgsfield.app
 - /basarilar sayfası eklendi (yarışmalar, programlar, sertifikalar); projelere
   Ay Rotası + SmartGrid-Core eklendi; yolculuk gerçek verilerle güncellendi.
