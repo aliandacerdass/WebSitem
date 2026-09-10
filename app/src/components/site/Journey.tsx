@@ -5,6 +5,8 @@ type Waypoint = {
   tag: string;
   title: string;
   desc: string;
+  /** O durakta aşılması gereken engel: tek cümle. */
+  hurdle: string;
   /** Not defterinden kazanımlar: kısa, tek satırlık maddeler. */
   wins: string[];
   /** Tarih biliniyorsa mono etiket olarak basılır. */
@@ -23,6 +25,7 @@ const waypoints: Waypoint[] = [
     tag: "Bölüm 01",
     title: "BTÜ, Yapay Zeka ve Makine Öğrenmesi",
     desc: "Bursa Teknik Üniversitesi'nde bölüme başlangıç: Python, C ve Java temelleri, her kavram sıfırdan.",
+    hurdle: "Sıfırdan yazılım dilleri öğrenirken bir yandan kendimi geliştirmeye çalışmak.",
     wins: ["1. yıl tamamlandı", "Python, C ve Java temelleri"],
     x: 18.4,
     y: 77.6,
@@ -33,6 +36,8 @@ const waypoints: Waypoint[] = [
     tag: "Bölüm 02",
     title: "Data League",
     desc: "Üniversiteler arası veri ligi: 4 haftalık bootcamp ve Kaggle eleme datathonu, sertifikayla tamamlandı.",
+    hurdle:
+      "Kaggle elemesinde sıralama tablosunu kovalamak yerine genellemeye odaklanmak: ezberleyen model eleme dışı kalıyordu.",
     wins: ["4 haftalık bootcamp", "Kaggle eleme datathonu", "Sertifika"],
     x: 45.3,
     y: 66.0,
@@ -43,6 +48,8 @@ const waypoints: Waypoint[] = [
     tag: "Bölüm 03",
     title: "TUA Astro Hackathon, 1.lik",
     desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Bursa üniversiteleri arasında 1.lik.",
+    hurdle:
+      "A* düz mesafeye göre çalışınca rota dik yamaçlardan geçiyordu: maliyet fonksiyonuna eğim ve termal risk eklendi.",
     wins: [
       "Bursa üniversiteleri arası 1.lik",
       "Türkiye genelinde 4.lük",
@@ -58,6 +65,8 @@ const waypoints: Waypoint[] = [
     tag: "Bölüm 04",
     title: "Build with AI, 2.lik",
     desc: "GDG Bursa'nın çadırlı hackathonunda LLM prompt optimizasyonu projesiyle 2.lik ödülü.",
+    hurdle:
+      "Prompt kısaldıkça doğruluk düşüyordu: token maliyeti ile çıktı kalitesi arasında ölçülebilir bir denge kurmak gerekti.",
     wins: ["GDG Bursa 2.lik", "LLM prompt optimizasyonu", "Green AI yaklaşımı"],
     x: 47.7,
     y: 46.8,
@@ -68,6 +77,8 @@ const waypoints: Waypoint[] = [
     tag: "Bölüm 05",
     title: "Microsoft AI Innovators",
     desc: "Microsoft mentorluğunda yaz programı: çoklu ajan sistemleri, Agent Framework ve Azure AI Foundry.",
+    hurdle:
+      "Çoklu ajanda ajanlar aynı işi tekrar edince maliyet katlanıyordu: orkestrasyonu tek noktada toplamak gerekti.",
     wins: ["Programa kabul", "Çoklu ajan sistemleri", "Agent Framework ve Azure AI Foundry"],
     x: 57.7,
     y: 39.2,
@@ -78,6 +89,8 @@ const waypoints: Waypoint[] = [
     tag: "Sırada",
     title: "Kendi girişim denemelerim",
     desc: "CV Booster, Fal Uygulaması ve ajan takımları: fikirden ürüne her deneme, bir sonraki girişimin temeli.",
+    hurdle:
+      "Her CV çağrısı kullanıcı başına LLM maliyeti üretiyordu: rate limiting olmadan ücretsiz kullanım sürdürülebilir değildi.",
     wins: ["CV Booster: LLM destekli mobil uygulama", "Fal Uygulaması", "Ajan takımları"],
     x: 65.6,
     y: 34.7,
@@ -111,25 +124,44 @@ function PinRing({ open }: { open: boolean }) {
   );
 }
 
-function WinList({ wins }: { wins: string[] }) {
+function SectionLabel({ children }: { children: string }) {
   return (
-    <ul className="mt-3 space-y-1.5">
-      {wins.map((w) => (
-        <li key={w} className="flex gap-2 text-sm leading-snug text-[var(--ink)]/80">
-          <span
-            aria-hidden="true"
-            className="mt-[7px] size-1 shrink-0 rounded-full bg-[var(--ink-blue)]"
-          />
-          <span>{w}</span>
-        </li>
-      ))}
-    </ul>
+    <p className="site-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink)]/40">
+      {children}
+    </p>
+  );
+}
+
+/** Durak notu: önce aşılması gereken engel, sonra kazanımlar. */
+function Notes({ hurdle, wins }: { hurdle: string; wins: string[] }) {
+  return (
+    <>
+      <div className="mt-4 border-t border-[var(--ink)]/10 pt-3">
+        <SectionLabel>Engel</SectionLabel>
+        <p className="mt-1.5 text-sm leading-snug text-[var(--ink)]/75">{hurdle}</p>
+      </div>
+      <div className="mt-3 border-t border-[var(--ink)]/10 pt-3">
+        <SectionLabel>Kazanım</SectionLabel>
+        <ul className="mt-1.5 space-y-1.5">
+          {wins.map((w) => (
+            <li key={w} className="flex gap-2 text-sm leading-snug text-[var(--ink)]/80">
+              <span
+                aria-hidden="true"
+                className="mt-[7px] size-1 shrink-0 rounded-full bg-[var(--ink-blue)]"
+              />
+              <span>{w}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
 export function Journey() {
   const [openId, setOpenId] = useState<string | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const active = waypoints.find((w) => w.id === openId) ?? null;
 
   // Escape ile kapat, harita dışına tıklayınca kapat.
   useEffect(() => {
@@ -156,10 +188,11 @@ export function Journey() {
         </p>
         <h2 className="mt-4 text-4xl font-bold tracking-tighter md:text-5xl">Yolculuk</h2>
         <p className="mt-4 hidden max-w-lg text-sm text-[var(--ink)]/70 md:block">
-          Patikadaki iğnelere dokun: her durakta ne kazandığımı okuyabilirsin.
+          Patikadaki iğnelere dokun: her durakta neyi aşmam gerektiğini ve ne kazandığımı
+          okuyabilirsin.
         </p>
         <p className="mt-4 max-w-lg text-sm text-[var(--ink)]/70 md:hidden">
-          Her durakta ne kazandığım kartların içinde.
+          Her durakta neyi aştığım ve ne kazandığım kartların içinde.
         </p>
 
         {/* Harita: sadece md ve üstü. Yüzde koordinatlar 1600x900 orana bağlı,
@@ -176,62 +209,55 @@ export function Journey() {
             className="absolute inset-0 h-full w-full rounded-[4px] object-cover"
           />
 
-          {waypoints.map((w, i) => {
-            const open = openId === w.id;
-            // Sağ yarıdaki iğnelerde kart sola açılsın, ekran dışına taşmasın.
-            const flipX = w.x > 55;
-            // Ufka yakin iğnelerde yukarida yer yok: kart asagi acilir.
-            const flipY = w.y < 45;
-            return (
-              <div
-                key={w.id}
-                className="group absolute aspect-square -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${w.x}%`, top: `${w.y}%`, width: `${w.ring}%` }}
+          {waypoints.map((w, i) => (
+            <div
+              key={w.id}
+              className="group absolute aspect-square -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${w.x}%`, top: `${w.y}%`, width: `${w.ring}%` }}
+            >
+              <PinRing open={openId === w.id} />
+              {/* Şeffaf tetikleyici: çizili iğneyi ikizlemez, sadece işaretler.
+                  Uzaktaki iğneler küçüldüğü için dokunma hedefi 44px sabit. */}
+              <button
+                type="button"
+                aria-expanded={openId === w.id}
+                aria-controls="yolculuk-durak-paneli"
+                onClick={() => setOpenId(openId === w.id ? null : w.id)}
+                className="site-pin absolute left-1/2 top-1/2 size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-blue)] focus-visible:ring-offset-2"
               >
-                <PinRing open={open} />
-                {/* Şeffaf tetikleyici: çizili iğneyi ikizlemez, sadece işaretler.
-                    Uzaktaki iğneler küçüldüğü için dokunma hedefi 44px sabit. */}
-                <button
-                  type="button"
-                  aria-expanded={open}
-                  aria-controls={`${w.id}-panel`}
-                  onClick={() => setOpenId(open ? null : w.id)}
-                  className="site-pin absolute left-1/2 top-1/2 size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-blue)] focus-visible:ring-offset-2"
-                >
-                  <span className="sr-only">
-                    {i + 1}. durak, {w.tag}: {w.title}
-                  </span>
-                </button>
+                <span className="sr-only">
+                  {i + 1}. durak, {w.tag}: {w.title}
+                </span>
+              </button>
+            </div>
+          ))}
 
-                {open ? (
-                  <article
-                    id={`${w.id}-panel`}
-                    style={{
-                      transform: `translate(${flipX ? "calc(-100% + 22px)" : "-22px"}, ${
-                        flipY ? "34px" : "calc(-100% - 14px)"
-                      })`,
-                    }}
-                    className="absolute left-1/2 top-0 z-10 w-[290px] rounded-[4px] border border-[var(--ink)]/15 bg-[var(--paper)]/97 p-5 shadow-lg backdrop-blur-sm"
-                  >
-                    <div className="flex items-baseline justify-between gap-3">
-                      <span className="site-mono text-[11px] uppercase tracking-[0.18em] text-[var(--ink-blue)]">
-                        {w.tag}
-                      </span>
-                      {w.date ? (
-                        <span className="site-mono text-[11px] text-[var(--ink)]/45">{w.date}</span>
-                      ) : null}
-                    </div>
-                    <h3 className="mt-2 text-base font-bold leading-tight tracking-tight">
-                      {w.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]/75">{w.desc}</p>
-                    <WinList wins={w.wins} />
-                  </article>
+          {/* Panel iğneye yapışmıyor. Not uzadıkça kart harita çerçevesini
+              taşırıyordu; bunun yerine iğnenin ters yanında, dikey ortalı ve
+              yüksekliği haritayla sınırlı tek bir panel duruyor. Hangi durağın
+              seçili olduğunu iğnedeki halka gösteriyor. */}
+          {active ? (
+            <article
+              id="yolculuk-durak-paneli"
+              className={`absolute top-1/2 z-10 max-h-[calc(100%-2rem)] w-[290px] max-w-[calc(100%-2rem)] -translate-y-1/2 overflow-y-auto rounded-[4px] border border-[var(--ink)]/15 bg-[var(--paper)]/97 p-5 shadow-lg backdrop-blur-sm ${
+                active.x < 50 ? "right-4" : "left-4"
+              }`}
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="site-mono text-[11px] uppercase tracking-[0.18em] text-[var(--ink-blue)]">
+                  {active.tag}
+                </span>
+                {active.date ? (
+                  <span className="site-mono text-[11px] text-[var(--ink)]/45">{active.date}</span>
                 ) : null}
-                <span className="sr-only">{i + 1}. durak</span>
               </div>
-            );
-          })}
+              <h3 className="mt-2 text-base font-bold leading-tight tracking-tight">
+                {active.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]/75">{active.desc}</p>
+              <Notes hurdle={active.hurdle} wins={active.wins} />
+            </article>
+          ) : null}
         </div>
 
         {/* Mobil: harita yerine kartlar, içerik aynı. */}
@@ -251,7 +277,7 @@ export function Journey() {
               </div>
               <h3 className="mt-3 text-lg font-bold tracking-tight">{w.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]/75">{w.desc}</p>
-              <WinList wins={w.wins} />
+              <Notes hurdle={w.hurdle} wins={w.wins} />
             </article>
           ))}
         </div>
