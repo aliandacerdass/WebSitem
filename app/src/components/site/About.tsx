@@ -36,8 +36,7 @@ export function About() {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="/cv.pdf"
-              target="_blank"
-              rel="noreferrer"
+              download="Ali-Andac-Erdas-CV.pdf"
               className="site-mono inline-block w-fit border border-[var(--ink-blue)] px-4 py-2 text-xs text-[var(--ink-blue)] transition-transform hover:-translate-y-[1px] hover:shadow-sm motion-reduce:transition-none"
             >
               CV İndir
