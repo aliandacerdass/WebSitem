@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Nav } from "../components/site/Nav";
-import { Contact } from "../components/site/Contact";
+import { Ledger } from "../components/site/Ledger";
+import { Finale } from "../components/site/Finale";
 
 export const Route = createFileRoute("/basarilar")({
   head: () => ({
@@ -10,169 +11,34 @@ export const Route = createFileRoute("/basarilar")({
       {
         name: "description",
         content:
-          "Yarışma sonuçları, programlar ve sertifikalar: hackathon ödülleri, Microsoft AI Innovators ve daha fazlası.",
+          "Dereceler ve programlar: TUA Astro Hackathon 1.liği, GDG Build with AI 2.liği, NASA Space Apps global turu, Hasat 2026 yarı finali ve Microsoft AI Innovators.",
       },
     ],
   }),
   component: Achievements,
 });
 
-const results = [
-  {
-    tag: "1.lik",
-    title: "TUA Astro Hackathon",
-    org: "Sanayi ve Teknoloji Bakanlığı · Türkiye Uzay Ajansı · TÜMMİAD · Valentura",
-    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Bursa üniversiteleri arasında 1.lik, Türkiye genelinde 4.lük. Ay yüzeyi görevleri için otonom rota optimizasyonu: NASA yükseklik verisi üzerinde topografya duyarlı A* motoru, eğim ve termal risk maliyet modeli, üç uyarlanabilir görev profili.",
-    stack: "Python · A* · NASA GeoTIFF DEM",
-  },
-  {
-    tag: "2.lik Ödülü",
-    title: "Build with AI Hackathonu",
-    org: "GDG Bursa (Google Developers Group)",
-    desc: "Türkiye'nin ilk çadırlı hackathonu. LLM kullanımında arka plandaki prompt süreçlerini otomatik optimize eden eklenti: veri merkezi yükünü hafifletip yapay zekanın su tüketimini azaltan bir Green AI çözümü.",
-    stack: "LLM · Prompt Optimizasyonu · Sürdürülebilirlik",
-  },
-  {
-    tag: "2.lik",
-    title: "Veri Bilimi Olimpiyatı",
-    org: "Data Science Olympiad",
-    desc: "Veri bilimi yarışmasında ikincilik: veri analizi ve makine öğrenmesi problemlerinde takım çalışmasıyla elde edilen derece.",
-    stack: "Veri Bilimi · Makine Öğrenmesi",
-  },
-];
-
-const programs = [
-  {
-    tag: "Kabul",
-    title: "Microsoft AI Innovators Yaz Programı",
-    org: "Microsoft",
-    desc: "Microsoft mentorluğunda 4 haftalık program: çoklu ajan sistemleri ve uçtan uca yapay zeka ürünleri. Agent Framework ve Azure AI Foundry odaklı.",
-    stack: "Multi-Agent · Azure AI Foundry",
-  },
-  {
-    tag: "Girişim",
-    title: "Kendi Girişim Denemelerim",
-    org: "Fikirden ürüne",
-    desc: "Fikri ürüne çevirme pratiği: LLM destekli CV Booster mobil uygulaması, kahve falı yorumlayan Fal Uygulaması ve yapay zeka ajan takımlarıyla ürün denemeleri. Her deneme, bir sonraki girişimin temeli.",
-    stack: "Ürün Geliştirme · FastAPI · LLM",
-  },
-];
-
-const certificates = [
-  {
-    tag: "Sertifika",
-    title: "Python Programming for Data Science",
-    org: "Miuul · 26.04.2026",
-    desc: "Veri bilimi için Python programlama eğitimi tamamlandı.",
-    stack: "Python · Veri Bilimi",
-  },
-  {
-    tag: "Sertifika",
-    title: "Statistics Onramp",
-    org: "MathWorks · 12.03.2026",
-    desc: "İstatistik temelleri eğitimi tamamlandı.",
-    stack: "İstatistik",
-  },
-  {
-    tag: "Sertifika",
-    title: "Version Control: Git and GitHub",
-    org: "BTK Akademi · 21.02.2026",
-    desc: "Sürüm kontrolü, Git ve GitHub iş akışları eğitimi tamamlandı.",
-    stack: "Git · GitHub",
-  },
-  {
-    tag: "Sertifika",
-    title: "Data League",
-    org: "BTÜ Bilişim ve Kodlama Topluluğu",
-    desc: "Üniversiteler arası Data League ve Datathon: 4 haftalık veri bilimi bootcamp programı ve çevrimiçi Kaggle eleme datathonu tamamlandı.",
-    stack: "Veri Bilimi · Kaggle · Makine Öğrenmesi",
-  },
-];
-
-function Row({ item }: { item: (typeof results)[number] }) {
-  return (
-    <article className="grid gap-4 border-t border-[var(--ink)]/15 py-8 md:grid-cols-[180px_1fr] md:gap-10">
-      <span className="site-mono h-fit w-fit border border-[var(--ink-blue)] px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-[var(--ink-blue)]">
-        {item.tag}
-      </span>
-      <div>
-        <h3 className="text-2xl font-bold tracking-tight">{item.title}</h3>
-        <p className="site-mono mt-1 text-xs text-[var(--ink)]/55">{item.org}</p>
-        <p className="mt-3 max-w-[62ch] text-base leading-relaxed text-[var(--ink)]/75">
-          {item.desc}
-        </p>
-        <span className="site-mono mt-3 inline-block text-xs text-[var(--ink)]/55">
-          {item.stack}
-        </span>
-      </div>
-    </article>
-  );
-}
-
 function Achievements() {
   return (
-    <main className="min-h-dvh bg-[var(--paper)] text-[var(--ink)]">
+    <>
       <Nav />
-
-      <header className="mx-auto max-w-6xl px-5 pb-16 pt-36 md:px-8 md:pt-44">
-        <p className="site-mono text-xs uppercase tracking-[0.18em] text-[var(--ink-blue)]">
-          Defter 02
-        </p>
-        <h1 className="mt-4 text-5xl font-black tracking-tighter md:text-7xl">Başarılar</h1>
-        <p className="mt-6 max-w-[60ch] text-base leading-relaxed text-[var(--ink)]/75">
-          Deftere işlenen sonuçlar: yarışma dereceleri, kabul edilen programlar
-          ve sertifikalar. Detaylar ve duyurular LinkedIn profilimde.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <a
-            href="/cv.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="ink-fill inline-block border border-[var(--ink-blue)] px-6 py-3 text-sm font-bold transition-colors"
-          >
-            CV İndir
-          </a>
-          <a
-            href="https://www.linkedin.com/in/aliandacerdass/"
-            target="_blank"
-            rel="noreferrer"
-            className="site-mono border border-[var(--ink)]/25 px-4 py-2 text-xs transition-transform hover:-translate-y-[1px] hover:border-[var(--ink-blue)] hover:text-[var(--ink-blue)] motion-reduce:transition-none"
-          >
-            LinkedIn ↗
-          </a>
-        </div>
-      </header>
-
-      <section className="mx-auto max-w-6xl px-5 pb-20 md:px-8">
-        <h2 className="site-mono text-xs uppercase tracking-[0.18em] text-[var(--ink)]/55">
-          Yarışma Sonuçları
-        </h2>
-        <div className="mt-6">
-          {results.map((r) => (
-            <Row key={r.title} item={r} />
-          ))}
-        </div>
-
-        <h2 className="site-mono mt-16 text-xs uppercase tracking-[0.18em] text-[var(--ink)]/55">
-          Programlar ve Girişim
-        </h2>
-        <div className="mt-6">
-          {programs.map((r) => (
-            <Row key={r.title} item={r} />
-          ))}
-        </div>
-
-        <h2 className="site-mono mt-16 text-xs uppercase tracking-[0.18em] text-[var(--ink)]/55">
-          Sertifikalar
-        </h2>
-        <div className="mt-6">
-          {certificates.map((r) => (
-            <Row key={r.title} item={r} />
-          ))}
-        </div>
-      </section>
-
-      <Contact />
-    </main>
+      <main className="bg-[var(--night)] text-[var(--cream)]">
+        <section
+          data-theme="dark"
+          className="mx-auto max-w-7xl px-5 pb-8 pt-32 md:px-10 md:pb-12 md:pt-40"
+        >
+          <p className="label text-[var(--cream)]/55">✦ Başarılar</p>
+          <h1 className="serif mt-6 max-w-[16ch] text-[clamp(3rem,8vw,7.5rem)] leading-[0.92]">
+            Yarışmalar, programlar, <em className="italic">dereceler</em>.
+          </h1>
+          <p className="mt-6 max-w-[56ch] text-base leading-relaxed text-[var(--cream)]/70 md:text-lg">
+            Programlar: Microsoft AI Innovators (Temmuz-Ağustos 2026), Data League bootcamp ve
+            Kaggle datathonu. Projelerin ayrıntısı ana sayfadaki Eserler ve Arşiv bölümlerinde.
+          </p>
+        </section>
+        <Ledger id="dereceler" />
+        <Finale />
+      </main>
+    </>
   );
 }

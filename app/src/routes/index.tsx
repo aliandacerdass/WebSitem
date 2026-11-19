@@ -3,11 +3,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SmoothScroll } from "../components/site/SmoothScroll";
 import { Nav } from "../components/site/Nav";
 import { Hero } from "../components/site/Hero";
-import { About } from "../components/site/About";
-import { Projects } from "../components/site/Projects";
-import { Skills } from "../components/site/Skills";
+import { Manifesto } from "../components/site/Manifesto";
+import { Works } from "../components/site/Works";
+import { Archive } from "../components/site/Archive";
 import { Journey } from "../components/site/Journey";
-import { Contact } from "../components/site/Contact";
+import { Ledger } from "../components/site/Ledger";
+import { Finale } from "../components/site/Finale";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -16,14 +17,15 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <SmoothScroll>
-      <main className="min-h-dvh bg-[var(--paper)] text-[var(--ink)]">
-        <Nav />
+      <Nav />
+      <main className="min-h-dvh bg-[var(--cream)] text-[var(--ink)]">
         <Hero />
-        <About />
-        <Projects />
-        <Skills />
+        <Manifesto />
+        <Works />
+        <Archive />
         <Journey />
-        <Contact />
+        <Ledger />
+        <Finale />
       </main>
     </SmoothScroll>
   );

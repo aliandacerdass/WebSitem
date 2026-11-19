@@ -1,287 +1,360 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-type Waypoint = {
+import { useSceneProgress } from "../../hooks/useSceneProgress";
+
+type Stop = {
   id: string;
   tag: string;
+  date: string;
   title: string;
   desc: string;
   /** O durakta aşılması gereken engel: tek cümle. */
-  hurdle: string;
-  /** Not defterinden kazanımlar: kısa, tek satırlık maddeler. */
-  wins: string[];
-  /** Tarih biliniyorsa mono etiket olarak basılır. */
-  date?: string;
-  /** journey.jpg üzerindeki iğnenin yüzde konumu (1600x900 ölçüsünden). */
-  x: number;
-  y: number;
-  /** İşaret halkasının çapı, harita genişliğinin yüzdesi olarak.
-   *  Çizili iğne ufka doğru küçüldüğü için her durakta farklı. */
-  ring: number;
+  hurdle?: string;
+  wins?: string[];
+  /** Rotanın bu durağa vardığı oran (0-1), yol uzunluğuna göre ölçüldü. */
+  at: number;
+  /** journey.jpg üzerindeki çizili iğnenin yüzde konumu (1600x900). */
+  pin?: { x: number; y: number; ring: number };
 };
 
-const waypoints: Waypoint[] = [
+const stops: Stop[] = [
   {
-    id: "bolum-01",
-    tag: "Bölüm 01",
-    title: "BTÜ, Yapay Zeka ve Makine Öğrenmesi",
-    desc: "Bursa Teknik Üniversitesi'nde bölüme başlangıç: Python, C ve Java temelleri, her kavram sıfırdan.",
+    id: "btu",
+    tag: "Başlangıç",
+    date: "2024",
+    title: "BTÜ, Yapay Zekâ ve Makine Öğrenmesi",
+    desc: "Bursa Teknik Üniversitesi'nde bölüme başlangıç: Python, C ve Java temelleri, her kavram sıfırdan. 2026'da endüstri mühendisliği çift ana dalı.",
     hurdle: "Sıfırdan yazılım dilleri öğrenirken bir yandan kendimi geliştirmeye çalışmak.",
-    wins: ["1. yıl tamamlandı", "Python, C ve Java temelleri"],
-    x: 18.4,
-    y: 77.6,
-    ring: 4.5,
+    wins: [
+      "GPA 3.52 / 4.00",
+      "Data League bootcamp ve Kaggle datathonu",
+      "BTÜ Yapay Zekâ Topluluğu yönetim kurulu",
+    ],
+    at: 0,
+    pin: { x: 18.4, y: 77.6, ring: 4.5 },
   },
   {
-    id: "bolum-02",
-    tag: "Bölüm 02",
-    title: "Data League",
-    desc: "Üniversiteler arası veri ligi: 4 haftalık bootcamp ve Kaggle eleme datathonu, sertifikayla tamamlandı.",
-    hurdle:
-      "Kaggle elemesinde sıralama tablosunu kovalamak yerine genellemeye odaklanmak: ezberleyen model eleme dışı kalıyordu.",
-    wins: ["4 haftalık bootcamp", "Kaggle eleme datathonu", "Sertifika"],
-    x: 45.3,
-    y: 66.0,
-    ring: 2.6,
-  },
-  {
-    id: "bolum-03",
-    tag: "Bölüm 03",
-    title: "TUA Astro Hackathon, 1.lik",
-    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Bursa üniversiteleri arasında 1.lik.",
+    id: "tua",
+    tag: "İlk dereceler",
+    date: "Mart 2026",
+    title: "TUA Astro Hackathon 1.liği",
+    desc: "Türkiye'nin ilk ulusal uzay temalı hackathonunda Ay rotası optimizasyonu ile Bursa üniversiteleri arasında 1.lik. Aynı ay Çanakkale Veri Bilimi Olimpiyatı'nda 2.lik.",
     hurdle:
       "A* düz mesafeye göre çalışınca rota dik yamaçlardan geçiyordu: maliyet fonksiyonuna eğim ve termal risk eklendi.",
     wins: [
-      "Bursa üniversiteleri arası 1.lik",
-      "Türkiye genelinde 4.lük",
-      "NASA yükseklik verisi üzerinde topografya duyarlı A*",
+      "Bursa üniversiteleri arası 1.lik, Türkiye 4.lüğü",
+      "Veri Bilimi Olimpiyatı 2.liği",
+      "NASA yükseklik verisinde topografya duyarlı A*",
     ],
-    date: "29.03.2026",
-    x: 36.0,
-    y: 53.9,
-    ring: 2.0,
+    at: 0.235,
+    pin: { x: 45.3, y: 66.0, ring: 2.6 },
   },
   {
-    id: "bolum-04",
-    tag: "Bölüm 04",
-    title: "Build with AI, 2.lik",
-    desc: "GDG Bursa'nın çadırlı hackathonunda LLM prompt optimizasyonu projesiyle 2.lik ödülü.",
+    id: "gdg",
+    tag: "AquaGate",
+    date: "Temmuz 2026",
+    title: "Build with AI 2.liği",
+    desc: "GDG Bursa hackathonunda AquaGate: yapay zekânın su ayak izini görünür kılan ve gereksiz model çağrılarını önleyen ağ geçidi.",
     hurdle:
       "Prompt kısaldıkça doğruluk düşüyordu: token maliyeti ile çıktı kalitesi arasında ölçülebilir bir denge kurmak gerekti.",
-    wins: ["GDG Bursa 2.lik", "LLM prompt optimizasyonu", "Green AI yaklaşımı"],
-    x: 47.7,
-    y: 46.8,
-    ring: 1.6,
+    wins: [
+      "GDG Bursa 2.liği",
+      "Anlamsal önbellek ve küçük modele yönlendirme",
+      "Su ve enerji tasarrufu ölçümü",
+    ],
+    at: 0.432,
+    pin: { x: 36.0, y: 53.9, ring: 2.0 },
   },
   {
-    id: "bolum-05",
-    tag: "Bölüm 05",
+    id: "microsoft",
+    tag: "Microsoft",
+    date: "Temmuz-Ağustos 2026",
     title: "Microsoft AI Innovators",
-    desc: "Microsoft mentorluğunda yaz programı: çoklu ajan sistemleri, Agent Framework ve Azure AI Foundry.",
+    desc: "Microsoft programında internetsiz çalışan doküman asistanı: Foundry Local üzerinde RAG, otomatik testler ve ölçülmüş değerlendirme.",
     hurdle:
-      "Çoklu ajanda ajanlar aynı işi tekrar edince maliyet katlanıyordu: orkestrasyonu tek noktada toplamak gerekti.",
-    wins: ["Programa kabul", "Çoklu ajan sistemleri", "Agent Framework ve Azure AI Foundry"],
-    x: 57.7,
-    y: 39.2,
-    ring: 1.4,
+      "Wi-Fi kapalıyken çalıştığını söylemek yetmezdi: ağ gerçekten kesilip soğuk açılış test edildi.",
+    wins: [
+      "17/17 doğru cevap, 5/5 doğru ret",
+      "45 otomatik test",
+      "Çoklu ajan sistemleri ve Azure AI Foundry",
+    ],
+    at: 0.571,
+    pin: { x: 47.7, y: 46.8, ring: 1.6 },
+  },
+  {
+    id: "muninn",
+    tag: "Girişim",
+    date: "Eylül-Ekim 2026",
+    title: "Muninn'i kurduk",
+    desc: "Ayberk Kar ile kurucu ortaklık: internete çıkamayan fabrikalar için uzman onaylı ortak hafıza. Hasat 2026'da yarı final.",
+    hurdle:
+      "Daha büyük model her zaman daha iyi değildi: ortalama yükselirken bazı cevaplar geriliyordu. Kabul Kapısı bu yüzden doğdu.",
+    wins: [
+      "Çalışan internetsiz prototip",
+      "Hasat 2026 yarı finali",
+      "Otomotiv yan sanayiyle ilk saha görüşmesi",
+    ],
+    at: 0.722,
+    pin: { x: 57.7, y: 39.2, ring: 1.4 },
+  },
+  {
+    id: "nasa",
+    tag: "Global tur",
+    date: "Kasım 2026",
+    title: "NASA Space Apps Challenge",
+    desc: "SafePath: astronottan önce rover'ın yolu denediği Mars haritası. Bursa'da 8.lik ve global tura katılım.",
+    hurdle:
+      "Gizli bir engel çıktığında rotayı baştan hesaplamak yavaştı: D* Lite ile yalnızca bozulan kısım onarıldı.",
+    wins: ["Bursa 8.liği, global tur", "Gerçek NASA arazi verisi", "36 onarım 0,13 saniyede"],
+    at: 0.824,
+    pin: { x: 65.6, y: 34.7, ring: 1.2 },
   },
   {
     id: "sirada",
     tag: "Sırada",
-    title: "Kendi girişim denemelerim",
-    desc: "CV Booster, Fal Uygulaması ve ajan takımları: fikirden ürüne her deneme, bir sonraki girişimin temeli.",
-    hurdle:
-      "Her CV çağrısı kullanıcı başına LLM maliyeti üretiyordu: rate limiting olmadan ücretsiz kullanım sürdürülebilir değildi.",
-    wins: ["CV Booster: LLM destekli mobil uygulama", "Fal Uygulaması", "Ajan takımları"],
-    x: 65.6,
-    y: 34.7,
-    ring: 1.2,
+    date: "2027",
+    title: "İlk fabrika pilotu",
+    desc: "BTÜ Teknopark ön kuluçka başvurusu yapıldı. Hedef, Muninn'in bir fabrikanın kalite departmanında ilk pilotu.",
+    at: 0.97,
   },
 ];
 
+// Çizili rotanın sıralı noktaları (1600x900). journey-base.jpg bu rota
+// silinerek üretildi; orijinal görsel bu çizgi boyunca maskeyle açılır.
+const ROUTE =
+  "M318 758 L343 740.8 L379.6 723.6 L426.2 708.7 L475.6 696.4 L525.5 684.3 L575.7 671.8 L625.7 659.9 L671.4 648.1 L703.7 637 L714.4 624.8 L704.2 609.7 L683.4 596.9 L659.5 588.3 L628.5 581.1 L584.9 573.3 L538.6 565.2 L504.2 557.4 L486.7 549.8 L484 542.7 L494.2 535.3 L516.5 527.5 L543 521.1 L563.3 516.8 L577 512.1 L590.2 504.4 L608.5 494.8 L636.1 486.1 L671.2 478.9 L710 472.4 L747.6 466.2 L775.3 459.3 L787.4 451.9 L785.6 445.3 L775.5 439.7 L766.5 433 L767.9 424.3 L788.4 415.3 L830.1 408 L880.4 402.4 L925.3 397.8 L955.5 392.7 L968.9 387.5 L971.5 383.8 L965.3 378.6 L948.3 370 L930.4 364.5 L923.8 362.3 L931.6 358.2 L960.5 353.2 L1006.4 349 L1048.9 344.5 L1072 340.3 L1076.2 336.3 L1069.4 329.6 L1058.6 323.5 L1056.9 319.8 L1073.5 315.3 L1103.2 310.5 L1136.8 307.2 L1166.8 304.3 L1185 301.4 L1183.5 296.6 L1170.4 289.4 L1169.5 284.8 L1189.4 281.9 L1216 277.4 L1230.2 271.5 L1221.3 265.3 L1205.6 259.4 L1207.8 253.2 L1215 246.8 L1207.5 241 L1191.9 236.1 L1182.2 231.5 L1186.6 227 L1197.9 221.5";
+
+// Kaydırma ilerlemesinden çizim oranına: başta ve sonda kısa bir duraklama.
+const DRAW_START = 0.04;
+const DRAW_SPAN = 0.86;
+const drawOf = (p: number) => Math.min(1, Math.max(0, (p - DRAW_START) / DRAW_SPAN));
+const stopIndexAt = (d: number) => {
+  let idx = 0;
+  stops.forEach((s, i) => {
+    if (d + 0.004 >= s.at) idx = i;
+  });
+  return idx;
+};
+
+function Notes({ stop }: { stop: Stop }) {
+  if (!stop.hurdle && !stop.wins) return null;
+  return (
+    <>
+      {stop.hurdle ? (
+        <div className="mt-5 border-t border-[var(--ink)]/10 pt-4">
+          <p className="label text-[10px] text-[var(--ink)]/45">Engel</p>
+          <p className="mt-1.5 text-sm leading-snug text-[var(--ink)]/80">{stop.hurdle}</p>
+        </div>
+      ) : null}
+      {stop.wins ? (
+        <div className="mt-4 border-t border-[var(--ink)]/10 pt-4">
+          <p className="label text-[10px] text-[var(--ink)]/45">Kazanım</p>
+          <ul className="mt-1.5 space-y-1.5">
+            {stop.wins.map((w) => (
+              <li key={w} className="flex gap-2 text-sm leading-snug text-[var(--ink)]/85">
+                <span
+                  aria-hidden="true"
+                  className="mt-[7px] size-1 shrink-0 rounded-full bg-[var(--ink-blue)]"
+                />
+                <span>{w}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function StopHead({ stop }: { stop: Stop }) {
+  return (
+    <>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="label text-[var(--ink-blue)]">{stop.tag}</span>
+        <span className="label text-[10px] text-[var(--ink)]/45">{stop.date}</span>
+      </div>
+      <h3 className="serif mt-3 text-3xl leading-tight">{stop.title}</h3>
+      <p className="mt-3 text-sm leading-relaxed text-[var(--ink)]/75">{stop.desc}</p>
+    </>
+  );
+}
+
 /**
- * Çizimdeki iğnenin etrafına oturan halka. Kendi iğnemi çizmiyorum: çizili
- * iğneyi ikizlemek yerine sadece işaretliyorum. Ölçü sarmalayıcıdan gelir,
- * o da harita genişliğinin yüzdesi olduğu için her ekranda hizada kalır.
+ * Yolculuk (zirve): harita sabitlenir, kaydırdıkça mürekkep rota kendini
+ * çizer. Rota bir durağa varınca çizili iğnenin halkası yanar ve not o
+ * durağa geçer. Kendi iğnemizi çizmiyoruz; yalnızca halka. JS kapalıyken
+ * ya da hareket azaltılmışken rota tam çizili, bütün duraklar liste hâlinde.
  */
-function PinRing({ open }: { open: boolean }) {
-  return (
-    <>
-      <span
-        aria-hidden="true"
-        className={`absolute inset-0 rounded-full bg-[var(--ink-blue)]/12 transition-all duration-300 motion-reduce:transition-none ${
-          open ? "scale-[1.7] opacity-100" : "scale-50 opacity-0"
-        }`}
-      />
-      <span
-        aria-hidden="true"
-        className={`absolute inset-0 rounded-full border-2 border-[var(--ink-blue)] transition-all duration-300 motion-reduce:transition-none ${
-          open
-            ? "scale-100 opacity-100"
-            : "scale-75 opacity-30 group-hover:scale-95 group-hover:opacity-80"
-        }`}
-      />
-    </>
-  );
-}
-
-function SectionLabel({ children }: { children: string }) {
-  return (
-    <p className="site-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink)]/40">
-      {children}
-    </p>
-  );
-}
-
-/** Durak notu: önce aşılması gereken engel, sonra kazanımlar. */
-function Notes({ hurdle, wins }: { hurdle: string; wins: string[] }) {
-  return (
-    <>
-      <div className="mt-4 border-t border-[var(--ink)]/10 pt-3">
-        <SectionLabel>Engel</SectionLabel>
-        <p className="mt-1.5 text-sm leading-snug text-[var(--ink)]/75">{hurdle}</p>
-      </div>
-      <div className="mt-3 border-t border-[var(--ink)]/10 pt-3">
-        <SectionLabel>Kazanım</SectionLabel>
-        <ul className="mt-1.5 space-y-1.5">
-          {wins.map((w) => (
-            <li key={w} className="flex gap-2 text-sm leading-snug text-[var(--ink)]/80">
-              <span
-                aria-hidden="true"
-                className="mt-[7px] size-1 shrink-0 rounded-full bg-[var(--ink-blue)]"
-              />
-              <span>{w}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-}
-
 export function Journey() {
-  const [openId, setOpenId] = useState<string | null>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
-  const active = waypoints.find((w) => w.id === openId) ?? null;
+  const ref = useRef<HTMLElement>(null);
+  const maskPathRef = useRef<SVGPathElement>(null);
+  const measureRef = useRef<SVGPathElement>(null);
+  const tipRef = useRef<SVGCircleElement>(null);
+  const activeRef = useRef(stops.length - 1);
+  const [active, setActive] = useState(stops.length - 1);
 
-  // Escape ile kapat, harita dışına tıklayınca kapat.
   useEffect(() => {
-    if (!openId) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpenId(null);
-    };
-    const onPointer = (e: PointerEvent) => {
-      if (mapRef.current && !mapRef.current.contains(e.target as Node)) setOpenId(null);
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onPointer);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onPointer);
-    };
-  }, [openId]);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.dataset.motion = "on";
+    }
+  }, []);
+
+  const onFrame = useCallback((p: number) => {
+    const d = drawOf(p);
+    maskPathRef.current?.setAttribute("stroke-dashoffset", String(1 - d));
+    const m = measureRef.current;
+    const tip = tipRef.current;
+    if (m && tip) {
+      const pt = m.getPointAtLength(m.getTotalLength() * d);
+      tip.setAttribute("cx", pt.x.toFixed(1));
+      tip.setAttribute("cy", pt.y.toFixed(1));
+      tip.style.opacity = d > 0.002 && d < 0.999 ? "1" : "0";
+    }
+    const idx = stopIndexAt(d);
+    if (idx !== activeRef.current) {
+      activeRef.current = idx;
+      setActive(idx);
+    }
+  }, []);
+
+  useSceneProgress(ref, { mode: "pin", ease: 0.14, onFrame });
+
+  const goTo = (s: Stop) => {
+    const el = ref.current;
+    if (!el) return;
+    const total = el.offsetHeight - window.innerHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: top + (s.at * DRAW_SPAN + DRAW_START + 0.01) * total,
+      behavior: "smooth",
+    });
+  };
+
+  const current = stops[active];
 
   return (
-    <section id="yolculuk" className="relative border-t border-[var(--hairline)] bg-[var(--paper)]">
-      <div className="relative mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">
-        <p className="site-mono text-xs uppercase tracking-[0.18em] text-[var(--ink-blue)]">
-          Eğitim Koşusu
-        </p>
-        <h2 className="mt-4 text-4xl font-bold tracking-tighter md:text-5xl">Yolculuk</h2>
-        <p className="mt-4 hidden max-w-lg text-sm text-[var(--ink)]/70 md:block">
-          Patikadaki iğnelere dokun: her durakta neyi aşmam gerektiğini ve ne kazandığımı
-          okuyabilirsin.
-        </p>
-        <p className="mt-4 max-w-lg text-sm text-[var(--ink)]/70 md:hidden">
-          Her durakta neyi aştığım ve ne kazandığım kartların içinde.
-        </p>
+    <section
+      id="yolculuk"
+      ref={ref}
+      data-scene
+      data-theme="light"
+      className="journey relative bg-[var(--cream)] text-[var(--ink)]"
+    >
+      <div className="journey-sticky flex flex-col justify-center overflow-hidden">
+        <div className="mx-auto w-full max-w-7xl px-5 pb-8 pt-24 md:px-10 md:pt-24">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <h2 className="serif text-[clamp(2.6rem,6vw,5.5rem)] leading-none">Yolculuk</h2>
+            <p className="max-w-[36ch] text-sm text-[var(--ink)]/65 md:text-base">
+              Bir öğrenciden bir girişime: her durakta aştığım engel ve kazandığım şey.
+            </p>
+          </div>
 
-        {/* Harita: sadece md ve üstü. Yüzde koordinatlar 1600x900 orana bağlı,
-            bu yüzden görsel kırpılmadan (aspect-ratio ile) basılıyor. */}
-        <div
-          ref={mapRef}
-          className="relative mt-12 hidden aspect-[16/9] w-full select-none md:block"
-        >
-          <img
-            src="/assets/journey.jpg"
-            alt="Ufuktaki dağa uzanan, iğnelerle işaretlenmiş patika çizimi"
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 h-full w-full rounded-[4px] object-cover"
-          />
-
-          {waypoints.map((w, i) => (
-            <div
-              key={w.id}
-              className="group absolute aspect-square -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${w.x}%`, top: `${w.y}%`, width: `${w.ring}%` }}
-            >
-              <PinRing open={openId === w.id} />
-              {/* Şeffaf tetikleyici: çizili iğneyi ikizlemez, sadece işaretler.
-                  Uzaktaki iğneler küçüldüğü için dokunma hedefi 44px sabit. */}
-              <button
-                type="button"
-                aria-expanded={openId === w.id}
-                aria-controls="yolculuk-durak-paneli"
-                onClick={() => setOpenId(openId === w.id ? null : w.id)}
-                className="site-pin absolute left-1/2 top-1/2 size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-blue)] focus-visible:ring-offset-2"
+          <div className="mt-8 grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_330px] md:gap-10">
+            {/* Harita: yüzde koordinatlar 1600x900 orana bağlı, kırpılmadan basılıyor */}
+            <div className="relative aspect-[16/9] w-full select-none">
+              <svg
+                viewBox="0 0 1600 900"
+                className="absolute inset-0 h-full w-full"
+                role="img"
+                aria-label="Ufuktaki dağa uzanan, iğnelerle işaretlenmiş patika; rota kaydırdıkça mürekkeple çiziliyor"
               >
-                <span className="sr-only">
-                  {i + 1}. durak, {w.tag}: {w.title}
-                </span>
-              </button>
+                <defs>
+                  <mask
+                    id="yolculuk-rota"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="1600"
+                    height="900"
+                  >
+                    <path
+                      ref={maskPathRef}
+                      d={ROUTE}
+                      fill="none"
+                      stroke="#fff"
+                      strokeWidth={22}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      pathLength={1}
+                      strokeDasharray="1 1"
+                      strokeDashoffset={0}
+                    />
+                  </mask>
+                </defs>
+                <image href="/assets/journey-base.jpg" width="1600" height="900" />
+                <image
+                  href="/assets/journey.jpg"
+                  width="1600"
+                  height="900"
+                  mask="url(#yolculuk-rota)"
+                />
+                <path ref={measureRef} d={ROUTE} fill="none" stroke="none" />
+                <circle
+                  ref={tipRef}
+                  r="7"
+                  cx="318"
+                  cy="758"
+                  fill="var(--ink-blue)"
+                  className="ink-pulse"
+                  style={{ opacity: 0 }}
+                />
+              </svg>
+
+              {stops.map((s, i) =>
+                s.pin ? (
+                  <div
+                    key={s.id}
+                    className="group absolute aspect-square -translate-x-1/2 -translate-y-1/2"
+                    style={{ left: `${s.pin.x}%`, top: `${s.pin.y}%`, width: `${s.pin.ring}%` }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-0 rounded-full bg-[var(--ink-blue)]/15 transition-all duration-500 motion-reduce:transition-none ${
+                        i === active ? "scale-[1.8] opacity-100" : "scale-50 opacity-0"
+                      }`}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-0 rounded-full border-2 border-[var(--ink-blue)] transition-all duration-500 motion-reduce:transition-none ${
+                        i <= active ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => goTo(s)}
+                      className="absolute left-1/2 top-1/2 size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-blue)] focus-visible:ring-offset-2"
+                    >
+                      <span className="sr-only">
+                        {s.tag}, {s.date}: {s.title}
+                      </span>
+                    </button>
+                  </div>
+                ) : null,
+              )}
             </div>
-          ))}
 
-          {/* Panel iğneye yapışmıyor. Not uzadıkça kart harita çerçevesini
-              taşırıyordu; bunun yerine iğnenin ters yanında, dikey ortalı ve
-              yüksekliği haritayla sınırlı tek bir panel duruyor. Hangi durağın
-              seçili olduğunu iğnedeki halka gösteriyor. */}
-          {active ? (
+            {/* Etkin durağın notu */}
             <article
-              id="yolculuk-durak-paneli"
-              className={`absolute top-1/2 z-10 max-h-[calc(100%-2rem)] w-[290px] max-w-[calc(100%-2rem)] -translate-y-1/2 overflow-y-auto rounded-[4px] border border-[var(--ink)]/15 bg-[var(--paper)]/97 p-5 shadow-lg backdrop-blur-sm ${
-                active.x < 50 ? "right-4" : "left-4"
-              }`}
+              key={current.id}
+              aria-live="polite"
+              className="journey-card animate-in fade-in slide-in-from-bottom-2 border border-[var(--ink)]/12 bg-[var(--cream)] p-6 duration-500 motion-reduce:animate-none"
             >
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="site-mono text-[11px] uppercase tracking-[0.18em] text-[var(--ink-blue)]">
-                  {active.tag}
-                </span>
-                {active.date ? (
-                  <span className="site-mono text-[11px] text-[var(--ink)]/45">{active.date}</span>
-                ) : null}
-              </div>
-              <h3 className="mt-2 text-base font-bold leading-tight tracking-tight">
-                {active.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]/75">{active.desc}</p>
-              <Notes hurdle={active.hurdle} wins={active.wins} />
+              <StopHead stop={current} />
+              <Notes stop={current} />
             </article>
-          ) : null}
-        </div>
-
-        {/* Mobil: harita yerine kartlar, içerik aynı. */}
-        <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 md:hidden">
-          {waypoints.map((w) => (
-            <article
-              key={w.id}
-              className="w-[270px] shrink-0 snap-start rounded-[4px] border border-[var(--ink)]/15 bg-[var(--paper)]/92 p-6 backdrop-blur-sm"
-            >
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="site-mono text-[11px] uppercase tracking-[0.18em] text-[var(--ink-blue)]">
-                  {w.tag}
-                </span>
-                {w.date ? (
-                  <span className="site-mono text-[11px] text-[var(--ink)]/45">{w.date}</span>
-                ) : null}
-              </div>
-              <h3 className="mt-3 text-lg font-bold tracking-tight">{w.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]/75">{w.desc}</p>
-              <Notes hurdle={w.hurdle} wins={w.wins} />
-            </article>
-          ))}
+          </div>
         </div>
       </div>
+
+      {/* JS yokken ya da hareket azaltılmışken: bütün duraklar */}
+      <ol className="journey-fallback mx-auto grid max-w-7xl gap-4 px-5 pb-24 md:grid-cols-2 md:px-10">
+        {stops.map((s) => (
+          <li key={s.id} className="border border-[var(--ink)]/12 p-6">
+            <StopHead stop={s} />
+            <Notes stop={s} />
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

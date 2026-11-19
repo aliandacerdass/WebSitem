@@ -75,3 +75,13 @@ yetenekler, yolculuk (özgeçmiş), iletişim.
   kontroller elle grep ile yapıldı.
 - app-meta.json dolduruldu (og_title, favicon.svg, hero.jpg og görseli).
 - Sırada: kullanıcı gözden geçirmesi + DNS bağlama (bkz. tasks.md)
+
+
+## 19 Kas 2026: "Deneyler Galerisi" yeniden tasarımı (dal: yeni-tasarim)
+- Yeni dil: klasik galeri. Cormorant Garamond 300 başlık + Satoshi gövde + JetBrains Mono etiket; gece #0b0b0a, derin mavi #062e5c, krem #f2f1ed, mürekkep mavisi #2743c7. Tokenlar styles.css sonunda.
+- Sahneler (index.tsx): Hero (Orrery, pin) → Manifesto → Works (4 eser, sabit çerçeve + clip-path) → Archive (8 proje, imleci izleyen görsel) → Journey (ZİRVE: rota kaydırmayla çizilir) → Ledger (dereceler + alet çantası) → Finale (Gezgin, iletişim, künye). /basarilar = Ledger + Finale.
+- Ortak kanca: src/hooks/useSceneProgress.ts (--p CSS değişkeni, pin/enter modu, rest değeri).
+- Yolculuk tekniği: journey-base.jpg = journey.jpg'den rota OpenCV inpaint ile silindi; ROUTE polyline (1600x900) Journey.tsx'te; orijinal görsel bu çizgi boyunca SVG mask + stroke-dashoffset ile açılır. Durak oranları yol uzunluğundan ölçüldü (0, .235, .432, .571, .722, .824). html[data-motion="on"] yoksa (JS kapalı / reduced motion) rota tam, duraklar liste.
+- Görseller public/assets/art (Wikimedia, kamu malı; künye Finale alt bilgisinde), plates/ (muninn = Kabul Kapısı ekranı, safepath = demo ekranı). hero.jpg ve about.jpg silindi.
+- Ölü origin remote'u (token içeriyordu) 19 Kas'ta silindi; yayın yalnız github.
+- Doğrulama: 1440/1100/390'da hata yok, taşma yok; masaüstü 9.462 px (eski 8.258).

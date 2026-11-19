@@ -112,42 +112,64 @@
   }
 }
 
-/* ===== aliandacerdass.dev: laboratuvar defteri tema katmani ===== */
+/* ===== aliandacerdass.dev: Deneyler Galerisi ===== */
 :root {
-  --paper: #f6f6f3;
-  --paper-2: #ecece7;
+  --night: #0b0b0a;
+  --abyss: #062e5c;
+  --cream: #f2f1ed;
+  --cream-2: #e7e4dc;
   --ink: #16181d;
   --ink-blue: #2743c7;
-  --hairline: #d8d8d2;
+  --hairline: #d3cfc4;
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, serif;
   --font-display: "Satoshi", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-mono-site: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
 @layer base {
   html[data-site="portfolio"] {
-    background-color: var(--paper);
+    background-color: var(--cream);
     color: var(--ink);
     color-scheme: light;
   }
   html[data-site="portfolio"] body {
-    background-color: var(--paper);
+    background-color: var(--cream);
     color: var(--ink);
     font-family: var(--font-display);
   }
 }
 
+/* Sahne ilerlemesi: JS yokken ya da hareket azaltılmışken son hal (1). */
+[data-scene] {
+  --p: 1;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
 .site-mono {
   font-family: var(--font-mono-site);
   letter-spacing: 0.08em;
 }
-
-/* dot grid arka plan dokusu (yetenekler buyuk hucre) */
-.dot-grid {
-  background-image: radial-gradient(var(--hairline) 1px, transparent 1px);
-  background-size: 18px 18px;
+/* Küçük CAPS etiket */
+.label {
+  font-family: var(--font-mono-site);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
-/* iletisim CTA: alt cizgi murekkep gibi cekilir */
+/* Koyu bölümlerde ince ızgara */
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(242 241 237 / 0.06) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+}
+
+/* Bağlantı: alt çizgi mürekkep gibi çekilir */
 .underline-draw {
   position: relative;
 }
@@ -155,11 +177,11 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: -0.06em;
-  height: 0.045em;
+  bottom: -0.08em;
+  height: 1px;
   width: 100%;
-  background: var(--ink-blue);
-  transform: scaleX(0);
+  background: currentColor;
+  transform: scaleX(0.25);
   transform-origin: left center;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -167,80 +189,79 @@
 .underline-draw:focus-visible::after {
   transform: scaleX(1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .underline-draw::after {
-    transition: none;
-  }
+
+/* Kinetik satırlar: sahne ilerlemesine göre sırayla yükselir */
+.kin-line {
+  opacity: clamp(0, calc((var(--p) - var(--d, 0)) * 4), 1);
+  transform: translateY(calc((1 - clamp(0, calc((var(--p) - var(--d, 0)) * 4), 1)) * 0.6em));
 }
 
-/* hero CTA: soldan murekkep dolumu */
-.ink-fill {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
+/* Eserler: tablo katmanları alttan yukarı silinerek değişir */
+.work-layer {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.77, 0, 0.18, 1);
 }
-.ink-fill::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--ink-blue);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.ink-fill:hover::before,
-.ink-fill:focus-visible::before {
-  transform: scaleX(1);
-}
-.ink-fill:hover,
-.ink-fill:focus-visible {
-  color: var(--paper);
-}
-@media (prefers-reduced-motion: reduce) {
-  .ink-fill::before {
-    transition: none;
-  }
+.work-layer[data-active="true"] {
+  clip-path: inset(0 0 0 0);
 }
 
-/* proje satiri: plaka clip ile acilir */
-.plate-reveal {
-  clip-path: inset(8% 4% 8% 4% round 4px);
-  transform: scale(0.97);
-  transition:
-    clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.project-row:hover .plate-reveal,
-.project-row:focus-within .plate-reveal {
-  clip-path: inset(0 0 0 0 round 4px);
-  transform: scale(1);
-}
-@media (prefers-reduced-motion: reduce) {
-  .plate-reveal {
-    transition: none;
-    clip-path: inset(0 0 0 0 round 4px);
-    transform: none;
+/* Mürekkep ucu: rota çizilirken nabız */
+@keyframes ink-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
   }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.35;
+  }
+}
+.ink-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ink-pulse 1.6s ease-in-out infinite;
 }
 
-/* hero baslik satirlari mount'ta yukselir (viewport'a bagli degil) */
-@keyframes hero-rise {
-  from {
-    transform: translateY(44px);
-  }
-  to {
-    transform: none;
-  }
-}
-.hero-rise > * {
-  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.hero-rise > *:nth-child(2) {
-  animation-delay: 0.09s;
-}
 @media (prefers-reduced-motion: reduce) {
-  .hero-rise > * {
+  .underline-draw::after,
+  .work-layer {
+    transition: none;
+  }
+  .ink-pulse {
     animation: none;
+  }
+  .kin-line {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Yolculuk: varsayılan (JS yok / hareket azaltılmış) akış hâlindedir, rota tam
+   çizili ve bütün duraklar liste. JS hareket açıkken html[data-motion="on"]
+   koyar: sahne sabitlenir, liste ve kaydırma boşluğu devreye girer. */
+.journey {
+  height: auto;
+}
+.journey-card {
+  display: none;
+}
+html[data-motion="on"] .journey {
+  height: 230vh;
+}
+html[data-motion="on"] .journey-sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+}
+html[data-motion="on"] .journey-card {
+  display: block;
+}
+html[data-motion="on"] .journey-fallback {
+  display: none;
+}
+@media (max-width: 767px) {
+  html[data-motion="on"] .journey {
+    height: 220vh;
   }
 }
